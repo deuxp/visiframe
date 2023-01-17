@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import Menu from "./components/Menu/Menu";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 
 function App() {
@@ -12,10 +13,15 @@ function App() {
   };
 
   //test passing down: display menu name, log uri
-  const handleSelection = e => {
-    e.preventDefault();
-    console.log(e.target.value);
+  const handleSelection = uri => {
     // do something with the invoke func
+    console.log({ upTop: uri });
+    // invokeSetSelectionEmbeds(uri);
+    window.bridge.getEmbeds(uri, selection => {
+      // setEmbedList(selection)
+      console.log({ selection });
+      setEmbedList(prev => [...prev, ...selection]);
+    });
   };
 
   // GETS the initial data: Menu Items & the uri that is passed to ipcMain
@@ -29,16 +35,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={handleSelection}>get Menu</button>
-        <div className="data">
-          {selection.length > 0 && JSON.stringify(selection)}
-        </div>
-        <div>Initial Data dump: Menu</div>
-        <div>{JSON.stringify(menu)}</div>
-      </header>
+        {/* <button onClick={handleSelection}>get Menu</button> */}
 
-      {selection.length > 0 && (
-        <VideoPlayer url={selection[0].uri} title={selection[0].name} />
+        <Menu handleSelection={handleSelection} menu={menu} />
+      </header>
+      {/* <div>list length: {embedList.length > 0 && embedList[0].name}</div> */}
+      {embedList.length > 0 && (
+        <VideoPlayer url={embedList[0].uri} title={embedList[0].name} />
       )}
     </div>
   );

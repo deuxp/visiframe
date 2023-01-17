@@ -4,8 +4,9 @@ const indexBridge = {
   getEmbeds: (selection, cb) => {
     ipcRenderer.invoke("getEmbeds", selection);
     const listener = ipcRenderer.on("embeddedVideoList", (event, response) => {
-      const data = JSON.parse(response);
-      cb(data);
+      const json = JSON.parse(response);
+      // console.log({ json });
+      cb(json);
       listener.removeAllListeners("embeddedVideoList");
     });
   },
