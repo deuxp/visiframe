@@ -1,14 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 const indexBridge = {
-  greet: cb => {
-    ipcRenderer.invoke("getGreet");
-    const listener = ipcRenderer.on("sendGreet", (event, response) => {
-      console.log("invoked greet");
-      cb(response);
-      listener.removeAllListeners("sendGreet");
-    });
-  },
   getEmbeds: (selection, cb) => {
     ipcRenderer.invoke("getEmbeds", selection);
     const listener = ipcRenderer.on("embeddedVideoList", (event, response) => {

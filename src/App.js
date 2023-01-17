@@ -10,6 +10,11 @@ function App() {
     window.bridge.getEmbeds("14509087", selection => setMenu(selection));
   };
 
+  const handleStateTest = e => {
+    e.preventDefault();
+    console.log(data[1].name);
+  };
+
   useEffect(() => {
     window.bridge.getMenuItems(response => {
       console.log(response);
@@ -22,7 +27,8 @@ function App() {
       <header className="App-header">
         <button onClick={handleGet}>get Menu</button>
         <div className="data">{menu.length > 0 && menu[0].name}</div>
-        <div>{data.length}</div>
+        <div>Data length: {data.length}</div>
+        <button onClick={handleStateTest}>test data state</button>
       </header>
     </div>
   );

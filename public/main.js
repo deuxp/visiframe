@@ -68,11 +68,23 @@ const handleRequest = (url, cb) => {
 ///////////////////////////
 
 ipcMain.handle("getMenuItems", () => {
-  const url = "http://127.0.0.1:8080/api/login/projects";
-  handleRequest(url, response => {
-    console.log(response);
-    mainWindow.webContents.send("sendMenuItems", response);
-  });
+  // const url = "http://127.0.0.1:8080/api/login/projects";
+  // handleRequest(url, response => {
+  //   console.log(response);
+  //   mainWindow.webContents.send("sendMenuItems", response);
+  // });
+  const data = [
+    {
+      name: "sphere",
+      uri: "/users/600712/projects/14509091",
+    },
+    {
+      name: "maze",
+      uri: "/users/600712/projects/14509087",
+    },
+  ];
+  const mockData = JSON.stringify(data);
+  mainWindow.webContents.send("sendMenuItems", mockData);
 });
 
 ///////////////////////////////////
@@ -81,25 +93,13 @@ ipcMain.handle("getMenuItems", () => {
 
 ipcMain.handle("getEmbeds", (event, select) => {
   const url = `http://127.0.0.1:8080/api/login/videos/${select}`;
-  const request = net.request(url);
-
-  request.on("response", response => {
-    const data = [];
-    response.on("data", chunk => {
-      data.push(chunk);
-    });
-    response.on("end", () => {
-      const json = Buffer.concat(data).toString();
-      // console.log(json);
-      mainWindow.webContents.send("embeddedVideoList", json); // have to JSON.parse on the listener side
-    });
+  handleRequest(url, response => {
+    console.log(response);
+    mainWindow.webContents.send("embeddedVideoList", response);
   });
-
-  request.end();
 });
 
-// url, channel
-
+// TODO:
 // when getting the intial list of vids, populate a list here that is
 // the checklist, for what is allowed to be passed
 // then make a conditional guard clause checking that one of the valid values are true
