@@ -1,35 +1,45 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 
 function App() {
-  const [data, setData] = useState([]);
   const [menu, setMenu] = useState([]);
+  const [selection, setSelection] = useState([]);
+  const [embedList, setEmbedList] = useState([]);
 
-  const handleGet = e => {
-    e.preventDefault();
-    window.bridge.getEmbeds("14509087", selection => setMenu(selection));
+  const invokeSetSelectionEmbeds = uri => {
+    window.bridge.getEmbeds(uri, selection => setEmbedList(selection));
   };
 
-  const handleStateTest = e => {
+  //test passing down: display menu name, log uri
+  const handleSelection = e => {
     e.preventDefault();
-    console.log(data[1].name);
+    console.log(e.target.value);
+    // do something with the invoke func
   };
 
+  // GETS the initial data: Menu Items & the uri that is passed to ipcMain
   useEffect(() => {
     window.bridge.getMenuItems(response => {
       console.log(response);
-      setData(response);
+      setMenu(response);
     });
   }, []);
 
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={handleGet}>get Menu</button>
-        <div className="data">{menu.length > 0 && menu[0].name}</div>
-        <div>Data length: {data.length}</div>
-        <button onClick={handleStateTest}>test data state</button>
+        <button onClick={handleSelection}>get Menu</button>
+        <div className="data">
+          {selection.length > 0 && JSON.stringify(selection)}
+        </div>
+        <div>Initial Data dump: Menu</div>
+        <div>{JSON.stringify(menu)}</div>
       </header>
+
+      {selection.length > 0 && (
+        <VideoPlayer url={selection[0].uri} title={selection[0].name} />
+      )}
     </div>
   );
 }

@@ -5,7 +5,8 @@ let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 800,
+    useContentSize: true,
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
@@ -13,6 +14,13 @@ const createWindow = () => {
       nodeIntegration: false,
       preload: path.join(__dirname, "preload.js"),
     },
+  });
+
+  // Denies access to clickable links that appear in the iframe
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    return {
+      action: "deny",
+    };
   });
 
   const appURL = "http://localhost:3000";
@@ -76,11 +84,11 @@ ipcMain.handle("getMenuItems", () => {
   const data = [
     {
       name: "sphere",
-      uri: "/users/600712/projects/14509091",
+      uri: "14509091",
     },
     {
       name: "maze",
-      uri: "/users/600712/projects/14509087",
+      uri: "14509087",
     },
   ];
   const mockData = JSON.stringify(data);
