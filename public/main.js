@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, net } = require("electron");
 const path = require("path");
 
 let mainWindow;
@@ -43,3 +43,63 @@ app.on("window-all-closed", () => {
 ipcMain.handle("getGreet", () => {
   mainWindow.webContents.send("sendGreet", "hello from main");
 });
+
+////////////////////////////
+// helper: handleRequest //
+//////////////////////////
+
+const handleRequest = (url, cb) => {
+  const request = net.request(url);
+  request.on("response", response => {
+    const data = [];
+    response.on("data", chunk => {
+      data.push(chunk);
+    });
+    response.on("end", () => {
+      const json = Buffer.concat(data).toString();
+      cb(json);
+    });
+  });
+  request.end();
+};
+
+/////////////////////////////
+// GET: inital menu items //
+///////////////////////////
+
+ipcMain.handle("getMenuItems", () => {
+  const url = "http://127.0.0.1:8080/api/login/projects";
+  handleRequest(url, response => {
+    console.log(response);
+    mainWindow.webContents.send("sendMenuItems", response);
+  });
+});
+
+///////////////////////////////////
+// GET: list of Embedded Videos //
+/////////////////////////////////
+
+ipcMain.handle("getEmbeds", (event, select) => {
+  const url = `http://127.0.0.1:8080/api/login/videos/${select}`;
+  const request = net.request(url);
+
+  request.on("response", response => {
+    const data = [];
+    response.on("data", chunk => {
+      data.push(chunk);
+    });
+    response.on("end", () => {
+      const json = Buffer.concat(data).toString();
+      // console.log(json);
+      mainWindow.webContents.send("embeddedVideoList", json); // have to JSON.parse on the listener side
+    });
+  });
+
+  request.end();
+});
+
+// url, channel
+
+// when getting the intial list of vids, populate a list here that is
+// the checklist, for what is allowed to be passed
+// then make a conditional guard clause checking that one of the valid values are true
