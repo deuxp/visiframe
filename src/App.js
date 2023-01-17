@@ -5,20 +5,10 @@ import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 
 function App() {
   const [menu, setMenu] = useState([]);
-  const [selection, setSelection] = useState([]);
   const [embedList, setEmbedList] = useState([]);
 
-  const invokeSetSelectionEmbeds = uri => {
-    window.bridge.getEmbeds(uri, selection => setEmbedList(selection));
-  };
-
-  //test passing down: display menu name, log uri
   const handleSelection = uri => {
-    // do something with the invoke func
-    console.log({ upTop: uri });
-    // invokeSetSelectionEmbeds(uri);
     window.bridge.getEmbeds(uri, selection => {
-      // setEmbedList(selection)
       console.log({ selection });
       setEmbedList(prev => [...prev, ...selection]);
     });
@@ -35,13 +25,14 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <button onClick={handleSelection}>get Menu</button> */}
-
         <Menu handleSelection={handleSelection} menu={menu} />
       </header>
-      {/* <div>list length: {embedList.length > 0 && embedList[0].name}</div> */}
       {embedList.length > 0 && (
-        <VideoPlayer url={embedList[0].uri} title={embedList[0].name} />
+        <VideoPlayer
+          // url={embedList[0].uri}
+          url={embedList[0].uri + "&autoplay=1&loop=1&muted=1"}
+          title={embedList[0].name}
+        />
       )}
     </div>
   );
