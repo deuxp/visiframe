@@ -6,18 +6,22 @@ import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 function App() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
+  const [duration, setDuration] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentVideo, setCurrentVideo] = useState(null);
 
   const handleSelection = uri => {
     window.bridge.getEmbeds(uri, selection => {
-      console.log({ selection });
       setEmbedList(prev => [...prev, ...selection]);
+      // console.log("this is to set current", selection[index]);
+      // its an array
+      // setCurrentVideo(selection[index]);
     });
   };
 
-  // GETS the initial data: Menu Items & the uri that is passed to ipcMain
+  // GETS initial data dump from ipcMain
   useEffect(() => {
     window.bridge.getMenuItems(response => {
-      console.log(response);
       setMenu(response);
     });
   }, []);
@@ -27,11 +31,23 @@ function App() {
       <header className="App-header">
         <Menu handleSelection={handleSelection} menu={menu} />
       </header>
-      {embedList.length > 0 && (
+      <div>App duration: {duration}</div>
+      {embedList.length > 0 && currentIndex === 0 && (
         <VideoPlayer
-          // url={embedList[0].uri}
-          url={embedList[0].uri + "&autoplay=1&loop=1&muted=1"}
-          title={embedList[0].name}
+          embedList={embedList}
+          setCurrentIndex={setCurrentIndex}
+          currentIndex={currentIndex}
+          duration={duration}
+          setDuration={setDuration}
+        />
+      )}{" "}
+      {embedList.length > 0 && currentIndex === 1 && (
+        <VideoPlayer
+          embedList={embedList}
+          setCurrentIndex={setCurrentIndex}
+          currentIndex={currentIndex}
+          duration={duration}
+          setDuration={setDuration}
         />
       )}
     </div>

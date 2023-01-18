@@ -7,6 +7,7 @@ const createWindow = () => {
     width: 800,
     height: 800,
     useContentSize: true,
+    frame: false,
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
