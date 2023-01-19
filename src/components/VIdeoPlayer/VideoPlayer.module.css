@@ -1,0 +1,25 @@
+.container__button {
+  display: flex;
+  position: absolute;
+  padding: 5px;
+  /* border: solid green 1px; */
+}
+
+.button--position {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  top: 100px;
+
+  padding: 1em;
+  border: solid orange 3px;
+  background-color: rgba(54, 64, 255, 0.724);
+  border-radius: 5px;
+}
+
+.button {
+  padding: 1em;
+  margin-left: .5em;
+  margin-right: .5em;
+  border-radius: 5px;
+}

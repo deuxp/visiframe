@@ -8,14 +8,11 @@ function App() {
   const [embedList, setEmbedList] = useState([]);
   const [duration, setDuration] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [currentVideo, setCurrentVideo] = useState(null);
+  const [isPlayerActive, setIsPlayerActive] = useState(false);
 
   const handleSelection = uri => {
     window.bridge.getEmbeds(uri, selection => {
       setEmbedList(prev => [...prev, ...selection]);
-      // console.log("this is to set current", selection[index]);
-      // its an array
-      // setCurrentVideo(selection[index]);
     });
   };
 
@@ -26,6 +23,22 @@ function App() {
     });
   }, []);
 
+  const renderPlayers = embedList.map((embed, index) => {
+    return (
+      embedList.length > 0 &&
+      currentIndex === index && (
+        <VideoPlayer
+          key={index}
+          embedList={embedList}
+          setCurrentIndex={setCurrentIndex}
+          currentIndex={currentIndex}
+          duration={duration}
+          setDuration={setDuration}
+        />
+      )
+    );
+  });
+
   return (
     <div className="App">
       {embedList.length === 0 && (
@@ -33,8 +46,8 @@ function App() {
           <Menu handleSelection={handleSelection} menu={menu} />
         </header>
       )}
-      {/* <div>App duration: {duration}</div> */}
-      {embedList.length > 0 && currentIndex === 0 && (
+      {renderPlayers}
+      {/* {embedList.length > 0 && currentIndex === 0 && (
         <VideoPlayer
           embedList={embedList}
           setCurrentIndex={setCurrentIndex}
@@ -51,7 +64,7 @@ function App() {
           duration={duration}
           setDuration={setDuration}
         />
-      )}
+      )} */}
     </div>
   );
 }
