@@ -11,6 +11,8 @@ function VideoPlayer({
   setDuration,
   currentIndex,
   setCurrentIndex,
+  setIsPlayerActive,
+  isPlayerActive,
 }) {
   const element = useRef(null);
   const { name, uri } = embedList[currentIndex];
@@ -70,6 +72,10 @@ function VideoPlayer({
     if (player.current) player.current.play();
     else console.log("play button not loaded");
   };
+  const handleExit = () => {
+    if (player.current) setIsPlayerActive(!isPlayerActive);
+    else console.log("error exiting");
+  };
   const handleNext = () => {
     if (player.current) {
       setCurrentIndex((currentIndex + 1) % embedList.length);
@@ -97,6 +103,9 @@ function VideoPlayer({
           </button>
           <button className={style["button"]} onClick={handleNext}>
             next
+          </button>
+          <button className={style["button"]} onClick={handleExit}>
+            exit
           </button>
         </div>
       </div>

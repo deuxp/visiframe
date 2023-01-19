@@ -1,0 +1,8 @@
+.anchor__item {
+  color: antiquewhite;
+}
+
+.anchor__item:hover {
+  color: aquamarine;
+  cursor: pointer;
+}

@@ -13,6 +13,7 @@ function App() {
   const handleSelection = uri => {
     window.bridge.getEmbeds(uri, selection => {
       setEmbedList(prev => [...prev, ...selection]);
+      setIsPlayerActive(!isPlayerActive);
     });
   };
 
@@ -25,7 +26,7 @@ function App() {
 
   const renderPlayers = embedList.map((embed, index) => {
     return (
-      embedList.length > 0 &&
+      isPlayerActive &&
       currentIndex === index && (
         <VideoPlayer
           key={index}
@@ -34,6 +35,8 @@ function App() {
           currentIndex={currentIndex}
           duration={duration}
           setDuration={setDuration}
+          setIsPlayerActive={setIsPlayerActive}
+          isPlayerActive={isPlayerActive}
         />
       )
     );
@@ -41,7 +44,7 @@ function App() {
 
   return (
     <div className="App">
-      {embedList.length === 0 && (
+      {!isPlayerActive && (
         <header className="App-header">
           <Menu handleSelection={handleSelection} menu={menu} />
         </header>

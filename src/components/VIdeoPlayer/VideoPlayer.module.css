@@ -2,24 +2,37 @@
   display: flex;
   position: absolute;
   padding: 5px;
-  /* border: solid green 1px; */
 }
 
 .button--position {
   display: flex;
   justify-content: space-around;
   position: relative;
-  top: 100px;
-
+  top: 10px;
+  left: 10px;
+  height: 50px;
+  width: 200px;
   padding: 1em;
-  border: solid orange 3px;
+  border: solid blanchedalmond 5px;
   background-color: rgba(54, 64, 255, 0.724);
-  border-radius: 5px;
+  border-radius: 35px;
 }
 
 .button {
-  padding: 1em;
-  margin-left: .5em;
-  margin-right: .5em;
-  border-radius: 5px;
+  padding: 7px;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 15px;
+  background-color: rgba(8, 18, 212, 0.724);
+  color: blanchedalmond;
+  transition: 300ms;
+}
+
+.button:hover {
+  cursor: pointer;
+  padding: 10px;
+  background-color: aquamarine;
+  color: violet;
+  transform: scaleY(1.1);
+  /* transform: scale(1.1); */
 }
