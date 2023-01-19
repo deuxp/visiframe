@@ -28,10 +28,12 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <Menu handleSelection={handleSelection} menu={menu} />
-      </header>
-      <div>App duration: {duration}</div>
+      {embedList.length === 0 && (
+        <header className="App-header">
+          <Menu handleSelection={handleSelection} menu={menu} />
+        </header>
+      )}
+      {/* <div>App duration: {duration}</div> */}
       {embedList.length > 0 && currentIndex === 0 && (
         <VideoPlayer
           embedList={embedList}

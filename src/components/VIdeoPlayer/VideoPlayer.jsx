@@ -27,7 +27,7 @@ function VideoPlayer({
     console.log("handleClick");
   };
 
-  // const player = useRef(null);
+  const player = useRef(null);
   useEffect(() => {
     const options = {
       url: uri,
@@ -38,20 +38,22 @@ function VideoPlayer({
       autoplay: true,
     };
 
-    const el = document.getElementById("vidFrame");
+    // const el = document.getElementById("vidFrame");
     // const player = new Player("vidFrame", options);
-    const player = new Player(el);
+    element.current = document.getElementById("vidFrame");
+    player.current = new Player(element.current);
     // player.loadVideo(uri).then(event => {
     //   console.log("loaded");
     //   player.play();
     // });
 
-    player.on("play", playData => {
+    player.current.on("play", playData => {
       // setDuration(playData.duration);
       console.log("playing");
     });
-    player.on("ended", data => {
+    player.current.on("ended", data => {
       console.log("ended: ", data);
+      player.current.destroy();
       setCurrentIndex((currentIndex + 1) % embedList.length);
     });
 
@@ -73,18 +75,18 @@ function VideoPlayer({
   return (
     <>
       {/* <button onClick={handleScreenfull}>fullscreen</button> */}
-      <button onClick={handleClick}>next</button>
-      <div>Duration: {duration}</div>
-      <div>currentIndex: {currentIndex}</div>
+      {/* <button onClick={handleClick}>next</button> */}
+      {/* <div>Duration: {duration}</div>
+      <div>currentIndex: {currentIndex}</div> */}
       <div className="iframe-container">
         {/* <div id="vidFrame"></div> */}
         <iframe
           id="vidFrame"
           title={name}
-          src={uri + `&autoplay=1&muted=1`}
+          src={uri + `&autoplay=1&muted=1&frameborder=0&background=1&loop=0`}
           // src={uri + "?autoplay=1&loop=1&muted=1"}
           // width={640}
-
+          frameBorder={0}
           height={height}
           width={width}
           muted={true}
