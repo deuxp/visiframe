@@ -3,6 +3,9 @@
   /* border: 1px green solid; */
 }
 
+.hide-cursor {
+  cursor: none;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

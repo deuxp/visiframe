@@ -16,7 +16,6 @@ function VideoPlayer({
 }) {
   const element = useRef(null);
   const { name, uri } = embedList[currentIndex];
-  // const { container__button } = style;
 
   const height = window.screen.availHeight;
   const width = window.screen.availWidth;
@@ -33,14 +32,14 @@ function VideoPlayer({
 
   const player = useRef(null);
   useEffect(() => {
-    const options = {
-      url: uri,
-      title: name,
-      height: window.screen.availHeight,
-      allow: "fullscreen; autoplay",
-      muted: true,
-      autoplay: true,
-    };
+    // const options = {
+    //   url: uri,
+    //   title: name,
+    //   height: window.screen.availHeight,
+    //   allow: "fullscreen; autoplay",
+    //   muted: true,
+    //   autoplay: true,
+    // };
 
     // const el = document.getElementById("vidFrame");
     // const player = new Player("vidFrame", options);
@@ -102,7 +101,7 @@ function VideoPlayer({
             pause
           </button>
           <button className={style["button"]} onClick={handleNext}>
-            next
+            skip
           </button>
           <button className={style["button"]} onClick={handleExit}>
             exit
