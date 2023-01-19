@@ -36,3 +36,39 @@
   transform: scaleY(1.1);
   /* transform: scale(1.1); */
 }
+
+.player-container {
+  opacity: 0.01;
+  visibility: hidden;
+}
+
+.open-it {
+  animation: inAnimation 6000ms forwards;
+}
+
+.close-it {
+  animation: outAnimation 500ms forwards;
+}
+
+@keyframes inAnimation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes outAnimation {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

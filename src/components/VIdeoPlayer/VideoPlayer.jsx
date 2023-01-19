@@ -54,6 +54,7 @@ function VideoPlayer({
       // setDuration(playData.duration);
       console.log("playing");
     });
+
     player.current.on("ended", data => {
       console.log("ended: ", data);
       player.current.destroy();
@@ -92,26 +93,24 @@ function VideoPlayer({
   return (
     <>
       {/* <button onClick={handleScreenfull}>fullscreen</button> */}
-      <div className={style["container__button"]}>
-        <div className={style["button--position"]}>
-          <button className={style["button"]} onClick={handlePlay}>
-            play
-          </button>
-          <button className={style["button"]} onClick={handlePause}>
-            pause
-          </button>
-          <button className={style["button"]} onClick={handleNext}>
-            skip
-          </button>
-          <button className={style["button"]} onClick={handleExit}>
-            exit
-          </button>
+      <div className={style["player-container open-it"]}>
+        <div className={style["container__button"]}>
+          <div className={style["button--position"]}>
+            <button className={style["button"]} onClick={handlePlay}>
+              play
+            </button>
+            <button className={style["button"]} onClick={handlePause}>
+              pause
+            </button>
+            <button className={style["button"]} onClick={handleNext}>
+              skip
+            </button>
+            <button className={style["button"]} onClick={handleExit}>
+              exit
+            </button>
+          </div>
         </div>
-      </div>
-      {/* <div>Duration: {duration}</div>
-      <div>currentIndex: {currentIndex}</div> */}
-      <div className="iframe-container">
-        {/* <div id="vidFrame"></div> */}
+        {/* <div className={style["open-it"]}> */}
         <iframe
           id="vidFrame"
           title={name}
