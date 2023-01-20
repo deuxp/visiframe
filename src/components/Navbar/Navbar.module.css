@@ -12,4 +12,5 @@
   /* background-color: red; */
   border: 2px orange solid;
   border-radius: 50%;
+  transition: all 1s ease;
 }
