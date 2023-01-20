@@ -1,0 +1,59 @@
+.position {
+  border: solid green 1px;
+  position: absolute;
+  left: 200px;
+}
+
+.triangle {
+  width: 300px;
+  height: 300px;
+  border: solid 1px green;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+
+}
+
+#blue {
+  background-color: #ace;
+  mix-blend-mode: screen;
+  animation: rotateright linear 10s infinite;
+}
+
+#red {
+  background-color: #f55;
+  mix-blend-mode: screen;
+  animation: rotateleft linear 22s infinite;
+}
+
+#green {
+  background-color: #595;
+  mix-blend-mode: screen;
+  animation: rotateleft linear 12s infinite;
+}
+
+.rot-right {
+  rotate: 45deg;
+}
+
+.rot-left {
+  rotate: -45deg;
+}
+
+@keyframes rotateright {
+  0% {
+    rotate: 0
+  }
+
+  100% {
+    rotate: 360deg
+  }
+}
+
+@keyframes rotateleft {
+  0% {
+    rotate: 0
+  }
+
+  100% {
+    rotate: -360deg
+  }
+}
