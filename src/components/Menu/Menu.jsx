@@ -1,7 +1,8 @@
 import React from "react";
 import MenuItems from "../MenuItems/MenuItems";
+import style from "./Menu.module.css";
 
-function Menu({ menu, handleSelection }) {
+function Menu({ menu, handleSelection, handleOnMouseOut }) {
   const renderMenuItems = menu.map(item => {
     return (
       <MenuItems
@@ -14,9 +15,12 @@ function Menu({ menu, handleSelection }) {
   });
   return (
     <>
-      {/* <div>{JSON.stringify(menu)}</div> */}
-      <h1>Utopics Visualizer</h1>
-      {renderMenuItems}
+      <div onMouseOut={handleOnMouseOut} className={style["menu__container"]}>
+        <header className={style["menu__header"]}>
+          {/* <h3>select</h3> */}
+          {renderMenuItems}
+        </header>
+      </div>
     </>
   );
 }

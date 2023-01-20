@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
   /* border: 1px green solid; */
 }
 
@@ -13,7 +13,7 @@
   }
 }
 
-.App-header {
+.menu-header {
   display: flex;
   flex-direction: column;
   align-items: center;

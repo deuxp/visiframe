@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Menu from "./components/Menu/Menu";
+import Navbar from "./components/Navbar/Navbar";
+// import Title from "./components/Title/Title";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 
 function App() {
@@ -44,30 +45,11 @@ function App() {
 
   return (
     <div className="App">
+      {/* <Title /> */}
       {!isPlayerActive && (
-        <header className="App-header">
-          <Menu handleSelection={handleSelection} menu={menu} />
-        </header>
+        <Navbar handleSelection={handleSelection} menu={menu} />
       )}
       {renderPlayers}
-      {/* {embedList.length > 0 && currentIndex === 0 && (
-        <VideoPlayer
-          embedList={embedList}
-          setCurrentIndex={setCurrentIndex}
-          currentIndex={currentIndex}
-          duration={duration}
-          setDuration={setDuration}
-        />
-      )}{" "}
-      {embedList.length > 0 && currentIndex === 1 && (
-        <VideoPlayer
-          embedList={embedList}
-          setCurrentIndex={setCurrentIndex}
-          currentIndex={currentIndex}
-          duration={duration}
-          setDuration={setDuration}
-        />
-      )} */}
     </div>
   );
 }

@@ -1,0 +1,22 @@
+.menu__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 1em;
+  padding-left: 1em;
+  justify-content: center;
+  min-height: 110px;
+  font-size: calc(10px + 2vmin);
+  color: rgb(226, 217, 190);
+  border: solid 1px orange;
+  border-radius: 7px;
+}
+
+/* collapsable target */
+.menu__container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  right: 50px;
+}

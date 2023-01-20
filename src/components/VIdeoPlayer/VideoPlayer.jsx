@@ -110,8 +110,9 @@ function VideoPlayer({
             </button>
           </div>
         </div>
-        {/* <div className={style["open-it"]}> */}
+        {/* <div className={style["video--wrapper"]}> */}
         <iframe
+          className={style["frame"]}
           id="vidFrame"
           title={name}
           src={uri + `&autoplay=1&muted=1&frameborder=0&background=1&loop=0`}
@@ -120,6 +121,7 @@ function VideoPlayer({
           width={width}
           muted={true}
         ></iframe>
+        {/* </div> */}
       </div>
     </>
   );

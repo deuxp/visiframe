@@ -1,20 +1,34 @@
 .container__button {
   display: flex;
-  position: absolute;
+  position: relative;
   padding: 5px;
 }
+
+/* .frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+} */
+
+/* .video--wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+} */
 
 .button--position {
   display: flex;
   justify-content: space-around;
-  position: relative;
-  top: 10px;
-  left: 10px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
   height: 50px;
   width: 200px;
   padding: 1em;
   border: solid blanchedalmond 5px;
-  background-color: rgba(54, 64, 255, 0.724);
+  background-color: rgba(0, 10, 200, 0.244);
   border-radius: 35px;
 }
 
@@ -30,10 +44,10 @@
 
 .button:hover {
   cursor: pointer;
-  padding: 10px;
+  /* padding: 10px; */
   background-color: aquamarine;
   color: violet;
-  transform: scaleY(1.1);
+  /* transform: scaleY(1.1); */
   /* transform: scale(1.1); */
 }
 
