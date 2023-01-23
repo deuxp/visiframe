@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-// import Title from "./components/Title/Title";
+import Title from "./components/Title/Title";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Title /> */}
+      {!isPlayerActive && <Title />}
       {!isPlayerActive && (
         <Navbar handleSelection={handleSelection} menu={menu} />
       )}

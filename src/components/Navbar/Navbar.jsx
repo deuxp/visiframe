@@ -16,7 +16,7 @@ function Navbar({ handleSelection, menu }) {
       onMouseOut={handleOnMouseOut}
       className={style[`${!show && "nav--toggle"}`]}
     >
-      Select
+      ::select::
       {show && (
         <Menu
           onMouseOut={handleOnMouseOut}

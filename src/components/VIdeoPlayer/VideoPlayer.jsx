@@ -16,42 +16,18 @@ function VideoPlayer({
 }) {
   const element = useRef(null);
   const { name, uri } = embedList[currentIndex];
-
   const height = window.screen.availHeight;
   const width = window.screen.availWidth;
-  // func to get the index calculation
-  // const getIndex = current => {
-  //   console.log("running get new index, helper");
-  //   return (current + 1) % embedList.length;
-  // };
-
-  // const handleClick = () => {
-  //   setCurrentIndex(current => (current + 1) % embedList.length);
-  //   console.log("handleClick");
-  // };
 
   const player = useRef(null);
   useEffect(() => {
-    // const options = {
-    //   url: uri,
-    //   title: name,
-    //   height: window.screen.availHeight,
-    //   allow: "fullscreen; autoplay",
-    //   muted: true,
-    //   autoplay: true,
-    // };
-
-    // const el = document.getElementById("vidFrame");
-    // const player = new Player("vidFrame", options);
     element.current = document.getElementById("vidFrame");
     player.current = new Player(element.current);
     // player.loadVideo(uri).then(event => {
     //   console.log("loaded");
     //   player.play();
     // });
-
     player.current.on("play", playData => {
-      // setDuration(playData.duration);
       console.log("playing");
     });
 
@@ -60,8 +36,6 @@ function VideoPlayer({
       player.current.destroy();
       setCurrentIndex((currentIndex + 1) % embedList.length);
     });
-
-    // return () => player.current.destroy();
   }, [currentIndex]);
 
   const handlePause = () => {

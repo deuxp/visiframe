@@ -11,7 +11,7 @@
   border: solid 1px orange;
   border-radius: 7px;
   transition: all 300ms;
-  animation: fade-in 500ms ease-out forwards;
+  animation: fade-in 300ms ease-out forwards;
   opacity: 0.01;
 }
 
