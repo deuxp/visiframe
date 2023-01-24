@@ -1,9 +1,9 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Player from "@vimeo/player";
 import style from "./VideoPlayer.module.css";
-import screenfull from "screenfull";
+import PlayerControls from "../PlayerControls/PlayerControls";
+// import screenfull from "screenfull";
 
 function VideoPlayer({
   embedList,
@@ -67,24 +67,14 @@ function VideoPlayer({
   return (
     <>
       {/* <button onClick={handleScreenfull}>fullscreen</button> */}
+      {/* <div className={style["video--wrapper"]}> */}
       <div className={style["player-container open-it"]}>
-        <div className={style["container__button"]}>
-          <div className={style["button--position"]}>
-            <button className={style["button"]} onClick={handlePlay}>
-              play
-            </button>
-            <button className={style["button"]} onClick={handlePause}>
-              pause
-            </button>
-            <button className={style["button"]} onClick={handleNext}>
-              skip
-            </button>
-            <button className={style["button"]} onClick={handleExit}>
-              exit
-            </button>
-          </div>
-        </div>
-        {/* <div className={style["video--wrapper"]}> */}
+        <PlayerControls
+          handleExit={handleExit}
+          handleNext={handleNext}
+          handlePause={handlePause}
+          handlePlay={handlePlay}
+        />
         <iframe
           className={style["frame"]}
           id="vidFrame"

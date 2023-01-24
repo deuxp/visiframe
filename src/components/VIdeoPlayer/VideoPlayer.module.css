@@ -1,9 +1,3 @@
-.container__button {
-  display: flex;
-  position: relative;
-  padding: 5px;
-}
-
 /* .frame {
   position: absolute;
   top: 0;
@@ -17,39 +11,6 @@
   display: block;
   width: 100%;
 } */
-
-.button--position {
-  display: flex;
-  justify-content: space-around;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  height: 50px;
-  width: 200px;
-  padding: 1em;
-  border: solid blanchedalmond 5px;
-  background-color: rgba(0, 10, 200, 0.244);
-  border-radius: 35px;
-}
-
-.button {
-  padding: 7px;
-  margin-left: 3px;
-  margin-right: 3px;
-  border-radius: 15px;
-  background-color: rgba(8, 18, 212, 0.724);
-  color: blanchedalmond;
-  transition: 300ms;
-}
-
-.button:hover {
-  cursor: pointer;
-  /* padding: 10px; */
-  background-color: aquamarine;
-  color: violet;
-  /* transform: scaleY(1.1); */
-  /* transform: scale(1.1); */
-}
 
 .player-container {
   opacity: 0.01;
