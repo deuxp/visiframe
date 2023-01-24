@@ -1,11 +1,11 @@
-.window--listener {
+.listener {
   position: absolute;
   height: 100vh;
   width: 100vw;
   /* border: green solid 1px; */
 }
 
-.container__button {
+.container {
   display: flex;
   position: relative;
   padding: 5px;
@@ -16,7 +16,7 @@
   opacity: 0;
 }
 
-.button--position {
+.position {
   display: flex;
   justify-content: space-around;
   position: absolute;
