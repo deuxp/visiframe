@@ -1,18 +1,19 @@
 import style from "./PlayerControls.module.css";
+import useTimeout from "../../hooks/useTimeout";
 import { useState } from "react";
 
 function PlayerControls({ handleExit, handleNext, handlePause, handlePlay }) {
-  const [hidden, setHidden] = useState(false);
+  const { isTrue, setIsTrue } = useTimeout(3000);
 
-  const handleClick = e => {
-    setHidden(!hidden);
-    // console.log(e.target.classList);
-    // console.log({ hidden });
+  const handleMove = e => {
+    if (!isTrue) {
+      setIsTrue(!isTrue);
+    }
   };
 
   return (
-    <div onClick={handleClick} className={style.listener}>
-      {!hidden && (
+    <div onMouseMove={handleMove} className={style.listener}>
+      {isTrue && (
         <div className={style.container}>
           <div className={style.position}>
             <button className={style.button} onClick={handlePlay}>

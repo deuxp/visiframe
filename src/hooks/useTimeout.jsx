@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 
 function useTimeout(delay) {
-  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [isTrue, setIsTrue] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => {
-      console.log("set false, timeId: ", id);
-      setIsAlertVisible(false);
+      // console.log("set false, timeId: ", id);
+      setIsTrue(false);
     }, delay);
     return () => {
-      console.log("--- cleared id: ", id);
+      // console.log("--- cleared id: ", id);
       clearTimeout(id);
     };
-  }, [isAlertVisible, delay]);
+  }, [isTrue, delay]);
 
-  return { isAlertVisible, setIsAlertVisible };
+  return { isTrue, setIsTrue };
 }
 
 export default useTimeout;
