@@ -77,7 +77,7 @@ const handleRequest = (url, cb) => {
 ipcMain.handle("getMenuItems", () => {
   const url = "http://127.0.0.1:8080/api/login/projects";
   handleRequest(url, response => {
-    console.log(response);
+    // console.log(response);
     mainWindow.webContents.send("sendMenuItems", response);
   });
 });
@@ -99,7 +99,7 @@ ipcMain.handle("getEmbeds", (event, select) => {
 
 ipcMain.handle("resizeWindow", (event, data) => {
   const { width, height } = JSON.parse(data);
-  console.log({ width, height });
+  // console.log({ width, height });
   mainWindow.setSize(width, height);
   mainWindow.center();
 });

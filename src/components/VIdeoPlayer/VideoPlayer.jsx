@@ -16,6 +16,11 @@ function VideoPlayer({
   const height = window.screen.availHeight;
   const width = window.screen.availWidth;
 
+  // helper
+  const getRandomInt = max => {
+    return Math.floor(Math.random() * max);
+  };
+
   const player = useRef(null);
   useEffect(() => {
     element.current = document.getElementById("vidFrame");
@@ -31,9 +36,12 @@ function VideoPlayer({
     player.current.on("ended", data => {
       console.log("ended: ", data);
       player.current.destroy();
-      setCurrentIndex((currentIndex + 1) % embedList.length);
+      const newIndex = getRandomInt(embedList.length);
+      // setCurrentIndex((currentIndex + 1) % embedList.length);
+      // console.log({ newIndex });
+      setCurrentIndex(newIndex);
     });
-  }, [currentIndex]);
+  }, [currentIndex, setCurrentIndex, embedList.length]);
 
   const handlePause = () => {
     if (player.current) player.current.pause();
@@ -49,7 +57,10 @@ function VideoPlayer({
   };
   const handleNext = () => {
     if (player.current) {
-      setCurrentIndex((currentIndex + 1) % embedList.length);
+      // setCurrentIndex((currentIndex + 1) % embedList.length);
+      const newIndex = getRandomInt(embedList.length);
+      // console.log({ newIndex });
+      setCurrentIndex(newIndex);
     } else console.log("next vid error");
   };
 
