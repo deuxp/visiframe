@@ -1,0 +1,35 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: red 1px dashed;
+  color: aliceblue;
+  width: max-content;
+  position: relative;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 1em;
+}
+
+.message_title {
+  font-size: 3em;
+}
+
+.message {
+  font-size: 2em;
+  padding-bottom: 1em;
+}

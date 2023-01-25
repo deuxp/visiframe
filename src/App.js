@@ -3,6 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Title from "./components/Title/Title";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
+import Error from "./components/Error/Error";
 
 function App() {
   const [menu, setMenu] = useState([]);
@@ -56,11 +57,15 @@ function App() {
 
   return (
     <div className="App">
+      {/* <Error setIsPlayerActive={setIsPlayerActive} /> */}
       {!isPlayerActive && <Title />}
       {!isPlayerActive && (
         <Navbar handleSelection={handleSelection} menu={menu} />
       )}
-      {renderPlayers}
+      {isPlayerActive && embedList.length > 0 && renderPlayers}
+      {isPlayerActive && embedList.length === 0 && (
+        <Error setIsPlayerActive={setIsPlayerActive} />
+      )}
     </div>
   );
 }
