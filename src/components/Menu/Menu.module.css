@@ -1,3 +1,14 @@
+/* collapsable target */
+.menu__container {
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-end; */
+  /* position: relative; */
+  border: 1px green solid;
+
+  /* right: 50px; */
+}
+
 .menu__header {
   display: flex;
   flex-direction: column;
@@ -8,28 +19,26 @@
   min-height: 110px;
   font-size: calc(10px + 2vmin);
   color: rgb(226, 217, 190);
-  border: solid 1px orange;
-  border-radius: 7px;
-  transition: all 300ms;
-  animation: fade-in 300ms ease-out forwards;
-  opacity: 0.01;
-}
 
-/* collapsable target */
-.menu__container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  position: absolute;
-  right: 50px;
+  border: solid 1px orange;
+  border-radius: 55px;
+
+  position: relative;
+  margin: auto;
+
+  transition: all 300ms;
+  /* animation: fade-in 200ms ease-out forwards; */
+  /* opacity: 0.01; */
 }
 
 @keyframes fade-in {
   0% {
     opacity: 0.01;
+    border-radius: 55px;
   }
 
   100% {
     opacity: 1;
+    border-radius: 7px;
   }
 }

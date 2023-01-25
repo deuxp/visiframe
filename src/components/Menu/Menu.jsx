@@ -16,10 +16,7 @@ function Menu({ menu, handleSelection, handleOnMouseOut }) {
   return (
     <>
       <div onMouseOut={handleOnMouseOut} className={style["menu__container"]}>
-        <header className={style["menu__header"]}>
-          {/* <h3>select</h3> */}
-          {renderMenuItems}
-        </header>
+        <header className={style["menu__header"]}>{renderMenuItems}</header>
       </div>
     </>
   );
