@@ -13,7 +13,7 @@ function App() {
 
   const handleSelection = uri => {
     window.bridge.getEmbeds(uri, selection => {
-      setEmbedList(prev => [...prev, ...selection]);
+      setEmbedList(prev => [...selection]);
       setIsPlayerActive(!isPlayerActive);
     });
   };
