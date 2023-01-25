@@ -8,8 +8,6 @@ const createWindow = () => {
     height: 800,
     useContentSize: true,
     frame: false,
-    // Set the path of an additional "preload" script that can be used to
-    // communicate between node-land and browser-land.
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -28,7 +26,6 @@ const createWindow = () => {
   const appURL = "http://localhost:3000";
   mainWindow.loadURL(appURL);
 
-  // Automatically open Chrome's DevTools in development mode.
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools({ mode: "detach" });
   }
@@ -76,25 +73,13 @@ const handleRequest = (url, cb) => {
 /////////////////////////////
 // GET: inital menu items //
 ///////////////////////////
-
+// const checklist = [];
 ipcMain.handle("getMenuItems", () => {
-  // const url = "http://127.0.0.1:8080/api/login/projects";
-  // handleRequest(url, response => {
-  //   console.log(response);
-  //   mainWindow.webContents.send("sendMenuItems", response);
-  // });
-  const data = [
-    {
-      name: "sphere",
-      uri: "14509091",
-    },
-    {
-      name: "maze",
-      uri: "14509087",
-    },
-  ];
-  const mockData = JSON.stringify(data);
-  mainWindow.webContents.send("sendMenuItems", mockData);
+  const url = "http://127.0.0.1:8080/api/login/projects";
+  handleRequest(url, response => {
+    console.log(response);
+    mainWindow.webContents.send("sendMenuItems", response);
+  });
 });
 
 ///////////////////////////////////
@@ -104,9 +89,19 @@ ipcMain.handle("getMenuItems", () => {
 ipcMain.handle("getEmbeds", (event, select) => {
   const url = `http://127.0.0.1:8080/api/login/videos/${select}`;
   handleRequest(url, response => {
-    // console.log(response);
     mainWindow.webContents.send("embeddedVideoList", response);
   });
+});
+
+/////////////////////////////
+// RESIZE: Browser Window //
+///////////////////////////
+
+ipcMain.handle("resizeWindow", (event, data) => {
+  const { width, height } = JSON.parse(data);
+  console.log({ width, height });
+  mainWindow.setSize(width, height);
+  mainWindow.center();
 });
 
 // TODO:

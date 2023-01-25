@@ -18,10 +18,21 @@ function App() {
     });
   };
 
+  // sets the available window size
+  const setAvailableWindowSize = (width, height) => {
+    const dimensions = { width, height };
+    const size = JSON.stringify(dimensions);
+    window.bridge.setWindowsize(size);
+  };
+
   // GETS initial data dump from ipcMain
   useEffect(() => {
     window.bridge.getMenuItems(response => {
       setMenu(response);
+      setAvailableWindowSize(
+        window.screen.availWidth,
+        window.screen.availHeight
+      );
     });
   }, []);
 

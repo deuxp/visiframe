@@ -17,6 +17,9 @@ const indexBridge = {
       listener.removeAllListeners("sendMenuItems");
     });
   },
+  setWindowsize: size => {
+    ipcRenderer.invoke("resizeWindow", size);
+  },
 };
 
 process.once("loaded", () => {
