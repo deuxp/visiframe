@@ -3,12 +3,9 @@ import { useEffect, useRef } from "react";
 import Player from "@vimeo/player";
 import style from "./VideoPlayer.module.css";
 import PlayerControls from "../PlayerControls/PlayerControls";
-// import screenfull from "screenfull";
 
 function VideoPlayer({
   embedList,
-  duration,
-  setDuration,
   currentIndex,
   setCurrentIndex,
   setIsPlayerActive,
@@ -56,18 +53,8 @@ function VideoPlayer({
     } else console.log("next vid error");
   };
 
-  // function handleScreenfull() {
-  //   if (!screenfull.isFullscreen) {
-  //     console.log("fullscreen ahead");
-  //     screenfull.request(element.current);
-  //   }
-  //   // element.current.requestFullscreen();
-  // }
-
   return (
     <>
-      {/* <button onClick={handleScreenfull}>fullscreen</button> */}
-      {/* <div className={style["video--wrapper"]}> */}
       <div className={style["player-container open-it"]}>
         <PlayerControls
           handleExit={handleExit}
@@ -85,12 +72,9 @@ function VideoPlayer({
           width={width}
           muted={true}
         ></iframe>
-        {/* </div> */}
       </div>
     </>
   );
 }
 
 export default VideoPlayer;
-
-// TODO: maybe on.play you can check if the player is in fullscreen mode

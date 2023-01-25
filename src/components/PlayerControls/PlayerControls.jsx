@@ -1,5 +1,6 @@
 import style from "./PlayerControls.module.css";
 import useTimeout from "../../hooks/useTimeout";
+import { useState } from "react";
 
 function PlayerControls({ handleExit, handleNext, handlePause, handlePlay }) {
   const { isTrue, setIsTrue } = useTimeout(3000);
@@ -24,7 +25,7 @@ function PlayerControls({ handleExit, handleNext, handlePause, handlePlay }) {
             skip
           </button>
           <button className={style.button} onClick={handleExit}>
-            exit
+            main menu
           </button>
         </div>
       )}
