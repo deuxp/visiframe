@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./MenuItems.module.css";
+import "../Navbar/Navbar.css";
 
 function MenuItems({ name, uri, handleSelection }) {
   const handleClick = uri => {
@@ -7,7 +7,7 @@ function MenuItems({ name, uri, handleSelection }) {
   };
   return (
     <>
-      <div className={style["anchor__item"]} onClick={() => handleClick(uri)}>
+      <div className="menu__item" onClick={() => handleClick(uri)}>
         {name}
       </div>
     </>

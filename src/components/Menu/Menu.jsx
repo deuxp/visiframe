@@ -1,8 +1,8 @@
 import React from "react";
 import MenuItems from "../MenuItems/MenuItems";
-import style from "./Menu.module.css";
+import "../Navbar/Navbar.css";
 
-function Menu({ menu, handleSelection, handleOnMouseOut }) {
+function Menu({ menu, handleSelection }) {
   const renderMenuItems = menu.map(item => {
     return (
       <MenuItems
@@ -15,9 +15,7 @@ function Menu({ menu, handleSelection, handleOnMouseOut }) {
   });
   return (
     <>
-      <div onMouseOut={handleOnMouseOut} className={style["menu__container"]}>
-        <header className={style["menu__header"]}>{renderMenuItems}</header>
-      </div>
+      <div className="menu__container">{renderMenuItems}</div>
     </>
   );
 }

@@ -1,21 +1,22 @@
-/* collapsable target */
 .menu__container {
-  display: flex;
-  flex-direction: column;
-  /* align-items: flex-end; */
-  /* position: relative; */
+  /* display: inline; */
+  /* flex-direction: column;
+  align-items: flex-end; */
+  width: max-content;
+  position: relative;
   border: 1px green solid;
-
   /* right: 50px; */
 }
 
 .menu__header {
+  border: 1px green solid;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  justify-content: center;
+
   padding-right: 1em;
   padding-left: 1em;
-  justify-content: center;
   min-height: 110px;
   font-size: calc(10px + 2vmin);
   color: rgb(226, 217, 190);
