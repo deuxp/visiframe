@@ -78,9 +78,14 @@ let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
   const url = `https://visii-api-production.up.railway.app/api/login/projects`;
   handleRequest(url, response => {
-    const data = JSON.parse(response);
-    checklist = data.map(video => video.uri);
-    mainWindow.webContents.send("sendMenuItems", response);
+    try {
+      const data = JSON.parse(response);
+      checklist = data.map(video => video.uri);
+      mainWindow.webContents.send("sendMenuItems", response);
+    } catch (error) {
+      console.log(error);
+      mainWindow.webContents.send("sendMenuItems", "[]");
+    }
   });
 });
 
@@ -103,7 +108,6 @@ ipcMain.handle("getEmbeds", (event, select) => {
 
 ipcMain.handle("resizeWindow", (event, data) => {
   const { width, height } = JSON.parse(data);
-  // console.log({ width, height });
   mainWindow.setSize(width, height);
   mainWindow.center();
 });

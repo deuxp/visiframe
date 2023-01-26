@@ -4,9 +4,14 @@ const indexBridge = {
   getEmbeds: (selection, cb) => {
     ipcRenderer.invoke("getEmbeds", selection);
     const listener = ipcRenderer.on("embeddedVideoList", (event, response) => {
-      const json = JSON.parse(response);
-      cb(json);
-      listener.removeAllListeners("embeddedVideoList");
+      try {
+        const json = JSON.parse(response);
+        cb(json);
+        listener.removeAllListeners("embeddedVideoList");
+      } catch (error) {
+        cb([]);
+        listener.removeAllListeners("embeddedVideoList");
+      }
     });
   },
   getMenuItems: cb => {
