@@ -57,7 +57,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Error setIsPlayerActive={setIsPlayerActive} /> */}
       {!isPlayerActive && <Title />}
       {!isPlayerActive && (
         <Navbar handleSelection={handleSelection} menu={menu} />

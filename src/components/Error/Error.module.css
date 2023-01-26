@@ -13,12 +13,23 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: red 1px dashed;
+  border: red 5px solid;
+  background-color: rgb(255, 145, 145);
   color: aliceblue;
   width: max-content;
   position: relative;
-  padding: 1em;
+  padding: 1.5em;
   border-radius: 5px;
+}
+
+.back {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.back:hover {
+  mix-blend-mode: exclusion;
 }
 
 .button {
@@ -27,9 +38,11 @@
 
 .message_title {
   font-size: 3em;
+  color: red;
 }
 
 .message {
+  color: red;
   font-size: 2em;
-  padding-bottom: 1em;
+  /* padding-bottom: 1em; */
 }
