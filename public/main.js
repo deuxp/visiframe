@@ -74,11 +74,12 @@ const handleRequest = (url, cb) => {
 /////////////////////////////
 // GET: inital menu items //
 ///////////////////////////
-// const checklist = [];
+let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
-  const url = "http://127.0.0.1:8080/api/login/projects";
+  const url = `https://visii-api-production.up.railway.app/api/login/projects`;
   handleRequest(url, response => {
-    // console.log(response);
+    const data = JSON.parse(response);
+    checklist = data.map(video => video.uri);
     mainWindow.webContents.send("sendMenuItems", response);
   });
 });
@@ -88,11 +89,12 @@ ipcMain.handle("getMenuItems", () => {
 /////////////////////////////////
 
 ipcMain.handle("getEmbeds", (event, select) => {
-  // console.log({ select });
-  const url = `http://127.0.0.1:8080/api/login/videos/${select}`;
-  handleRequest(url, response => {
-    mainWindow.webContents.send("embeddedVideoList", response);
-  });
+  if (checklist.includes(select)) {
+    const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
+    handleRequest(url, response => {
+      mainWindow.webContents.send("embeddedVideoList", response);
+    });
+  }
 });
 
 /////////////////////////////
