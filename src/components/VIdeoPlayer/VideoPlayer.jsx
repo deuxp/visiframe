@@ -5,6 +5,7 @@ import style from "./VideoPlayer.module.css";
 import PlayerControls from "../PlayerControls/PlayerControls";
 
 function VideoPlayer({
+  menu,
   embedList,
   currentIndex,
   setCurrentIndex,
@@ -36,7 +37,10 @@ function VideoPlayer({
     player.current.on("ended", data => {
       console.log("ended: ", data);
       player.current.destroy();
-      const newIndex = getRandomInt(embedList.length);
+      let newIndex = getRandomInt(embedList.length);
+      if (newIndex === currentIndex) {
+        newIndex = (currentIndex + 1) % embedList.length;
+      }
       // setCurrentIndex((currentIndex + 1) % embedList.length);
       // console.log({ newIndex });
       setCurrentIndex(newIndex);
@@ -44,30 +48,37 @@ function VideoPlayer({
   }, [currentIndex, setCurrentIndex, embedList.length]);
 
   const handlePause = () => {
-    if (player.current) player.current.pause();
-    else console.log("pause button not loaded");
+    if (!player.current) return;
+    player.current.pause();
+    // if (player.current) player.current.pause();
+    // else console.log("pause button not loaded");
   };
   const handlePlay = () => {
-    if (player.current) player.current.play();
-    else console.log("play button not loaded");
+    if (!player.current) return;
+    player.current.play();
+    // if (player.current) player.current.play();
+    // else console.log("play button not loaded");
   };
   const handleExit = () => {
-    if (player.current) setIsPlayerActive(!isPlayerActive);
-    else console.log("error exiting");
+    if (!player.current) return;
+    setIsPlayerActive(!isPlayerActive);
+    // if (player.current) setIsPlayerActive(!isPlayerActive);
+    // else console.log("error exiting");
   };
   const handleNext = () => {
-    if (player.current) {
-      // setCurrentIndex((currentIndex + 1) % embedList.length);
-      const newIndex = getRandomInt(embedList.length);
-      // console.log({ newIndex });
-      setCurrentIndex(newIndex);
-    } else console.log("next vid error");
+    if (!player.current) return;
+    let newIndex = getRandomInt(embedList.length);
+    if (newIndex === currentIndex) {
+      newIndex = (currentIndex + 1) % embedList.length;
+    }
+    setCurrentIndex(newIndex);
   };
 
   return (
     <>
       <div className={style["player-container open-it"]}>
         <PlayerControls
+          menu={menu}
           handleExit={handleExit}
           handleNext={handleNext}
           handlePause={handlePause}
