@@ -6,6 +6,7 @@ import PlayerControls from "../PlayerControls/PlayerControls";
 
 function VideoPlayer({
   menu,
+  handleSelection,
   embedList,
   currentIndex,
   setCurrentIndex,
@@ -79,6 +80,7 @@ function VideoPlayer({
       <div className={style["player-container open-it"]}>
         <PlayerControls
           menu={menu}
+          handleSelection={handleSelection}
           handleExit={handleExit}
           handleNext={handleNext}
           handlePause={handlePause}

@@ -60,6 +60,8 @@ function App() {
       isPlayerActive &&
       currentIndex === index && (
         <VideoPlayer
+          menu={menu}
+          handleSelection={handleSelection}
           key={index}
           embedList={embedList}
           setCurrentIndex={setCurrentIndex}
