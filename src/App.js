@@ -19,6 +19,17 @@ function App() {
     });
   };
 
+  const handleInitialGet = menuArr => {
+    return new Promise((resolve, reject) => {
+      try {
+        setMenu(menuArr);
+      } catch (error) {
+        reject({ error });
+      }
+      resolve(menuArr);
+    });
+  };
+
   // sets the available window size
   const setAvailableWindowSize = (width, height) => {
     const dimensions = { width, height };
@@ -29,11 +40,18 @@ function App() {
   // GETS initial data dump from ipcMain
   useEffect(() => {
     window.bridge.getMenuItems(response => {
-      setMenu(response);
-      setAvailableWindowSize(
-        window.screen.availWidth,
-        window.screen.availHeight
-      );
+      handleInitialGet(response)
+        .then(menu => {
+          setAvailableWindowSize(
+            window.screen.availWidth,
+            window.screen.availHeight
+          );
+          return menu;
+        })
+        .then(menu => {
+          handleSelection(menu[1].uri);
+          // console.log({ menu });
+        });
     });
   }, []);
 
@@ -57,7 +75,7 @@ function App() {
 
   return (
     <div className="App">
-      {!isPlayerActive && <Title />}
+      {/* {!isPlayerActive && <Title />} */}
       {!isPlayerActive && (
         <Navbar handleSelection={handleSelection} menu={menu} />
       )}
