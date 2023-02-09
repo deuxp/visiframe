@@ -6,14 +6,25 @@
 
 .position {
   display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  top: 80%;
+  /* bottom: 20px; */
+}
+
+.buttons {
+  display: flex;
   justify-content: space-around;
   position: relative;
 
-  top: 80%;
-  margin: auto;
+  /* top: 80%;
+  margin: auto; */
 
   height: 50px;
-  width: 200px;
+  /* width: 200px; */
+  width: max-content;
   padding: .5em;
   border: solid blanchedalmond 2px;
   background-color: rgba(0, 10, 200, 0.244);

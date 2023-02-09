@@ -19,6 +19,17 @@ function App() {
     });
   };
 
+  const handleInitialGet = menuArr => {
+    return new Promise((resolve, reject) => {
+      try {
+        setMenu(menuArr);
+      } catch (error) {
+        reject({ error });
+      }
+      resolve(menuArr);
+    });
+  };
+
   // sets the available window size
   const setAvailableWindowSize = (width, height) => {
     const dimensions = { width, height };
@@ -29,14 +40,18 @@ function App() {
   // GETS initial data dump from ipcMain
   useEffect(() => {
     window.bridge.getMenuItems(response => {
-      setMenu(response);
-      setAvailableWindowSize(
-        window.screen.availWidth,
-        window.screen.availHeight
-      );
-
-      // handle selection default here ..
-      handleSelection(response[1].uri);
+      handleInitialGet(response)
+        .then(menu => {
+          setAvailableWindowSize(
+            window.screen.availWidth,
+            window.screen.availHeight
+          );
+          return menu;
+        })
+        .then(menu => {
+          handleSelection(menu[1].uri);
+          // console.log({ menu });
+        });
     });
   }, []);
 
@@ -45,6 +60,8 @@ function App() {
       isPlayerActive &&
       currentIndex === index && (
         <VideoPlayer
+          menu={menu}
+          handleSelection={handleSelection}
           key={index}
           embedList={embedList}
           setCurrentIndex={setCurrentIndex}

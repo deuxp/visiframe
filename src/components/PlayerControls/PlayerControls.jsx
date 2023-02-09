@@ -1,8 +1,16 @@
 import style from "./PlayerControls.module.css";
 import useTimeout from "../../hooks/useTimeout";
 import { useEffect, useRef } from "react";
+import SelectVisual from "../SelectVisual/SelectVisual";
 
-function PlayerControls({ handleExit, handleNext, handlePause, handlePlay }) {
+function PlayerControls({
+  handleExit,
+  handleNext,
+  handlePause,
+  handlePlay,
+  menu,
+  handleSelection,
+}) {
   const { isTrue, setIsTrue } = useTimeout(3000);
   const listener = useRef(null);
 
@@ -18,8 +26,9 @@ function PlayerControls({ handleExit, handleNext, handlePause, handlePlay }) {
 
   return (
     <div onMouseMove={handleMove} ref={listener} className={style.listener}>
-      {isTrue && (
-        <div className={style.position}>
+      {/* {isTrue && ( */}
+      <div className={style.position}>
+        <div className={style.buttons}>
           <button className={style.button} onClick={handlePlay}>
             play
           </button>
@@ -33,7 +42,9 @@ function PlayerControls({ handleExit, handleNext, handlePause, handlePlay }) {
             main menu
           </button>
         </div>
-      )}
+        <SelectVisual menu={menu} handleSelection={handleSelection} />
+      </div>
+      {/* )} */}
     </div>
   );
 }

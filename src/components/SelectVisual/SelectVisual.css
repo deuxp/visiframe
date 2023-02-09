@@ -1,0 +1,9 @@
+.select__container {
+  position: relative;
+  border: green 1px solid;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+
+  top: 80%;
+}
