@@ -1,5 +1,6 @@
-const { app, BrowserWindow, ipcMain, net } = require("electron");
+const { app, BrowserWindow, ipcMain, net, session } = require("electron");
 const path = require("path");
+const URL = require("url").URL;
 
 let mainWindow;
 const createWindow = () => {
@@ -10,6 +11,7 @@ const createWindow = () => {
     frame: false,
     webPreferences: {
       contextIsolation: true,
+      sandbox: true,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       webviewTag: false,
@@ -17,13 +19,13 @@ const createWindow = () => {
     },
   });
 
+  // moved to listener..
   // Denies access to clickable links that appear in the iframe
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    return {
-      action: "deny",
-    };
-  });
-
+  // mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+  //   return {
+  //     action: "deny",
+  //   };
+  // });
   const appURL = "http://localhost:3000";
   mainWindow.loadURL(appURL);
 
@@ -32,8 +34,15 @@ const createWindow = () => {
   }
 };
 
+app.enableSandbox(); // enabled globally
 app.whenReady().then(() => {
   createWindow();
+
+  // session
+  //   .fromPartition("")
+  //   .setPermissionRequestHandler((webContents, permission, callback) => {
+  //     return callback(false);
+  //   });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -48,15 +57,52 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.handle("getGreet", () => {
-  mainWindow.webContents.send("sendGreet", "hello from main");
+/////////////////////////
+// Security listeners //
+///////////////////////
+
+// if a new webview is loaded: prevent event
+app.on("web-contents-created", (event, contents) => {
+  contents.on("will-attach-webview", (event, webPreferences, params) => {
+    // Strip away preload scripts if unused or verify their location is legitimate
+    delete webPreferences.preload;
+
+    // Disable Node.js integration
+    webPreferences.nodeIntegration = false;
+
+    // prevent the event
+    event.preventDefault();
+    // event.stopPropagation();
+  });
+});
+
+// listens for page navigation & stops
+app.on("web-contents-created", (event, contents) => {
+  contents.on("will-navigate", (event, navigationUrl) => {
+    event.preventDefault();
+    // event.stopPropagation();
+  });
+});
+
+app.on("web-contents-created", (event, contents) => {
+  contents.setWindowOpenHandler(({ url }) => {
+    event.preventDefault();
+    return { action: "deny" };
+  });
 });
 
 ////////////////////////////
 // helper: handleRequest //
 //////////////////////////
 
-const handleRequest = (url, cb) => {
+function validateSender(frame) {
+  // Value the host of the URL using an actual URL parser and an allowlist
+  if (new URL(frame.url).host === "https://visii-api-production.up.railway.app")
+    return true;
+  return false;
+}
+
+function handleRequest(url, cb) {
   const request = net.request(url);
   request.on("response", response => {
     const data = [];
@@ -69,7 +115,7 @@ const handleRequest = (url, cb) => {
     });
   });
   request.end();
-};
+}
 
 /////////////////////////////
 // GET: inital menu items //
@@ -95,6 +141,7 @@ ipcMain.handle("getMenuItems", () => {
 
 ipcMain.handle("getEmbeds", (event, select) => {
   if (checklist.includes(select)) {
+    console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
     const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
     handleRequest(url, response => {
       mainWindow.webContents.send("embeddedVideoList", response);

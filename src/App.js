@@ -8,7 +8,7 @@ import Error from "./components/Error/Error";
 function App() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
-  const [duration, setDuration] = useState(0);
+  // const [duration, setDuration] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isPlayerActive, setIsPlayerActive] = useState(false);
 
@@ -34,6 +34,9 @@ function App() {
         window.screen.availWidth,
         window.screen.availHeight
       );
+
+      // handle selection default here ..
+      handleSelection(response[1].uri);
     });
   }, []);
 
@@ -46,10 +49,12 @@ function App() {
           embedList={embedList}
           setCurrentIndex={setCurrentIndex}
           currentIndex={currentIndex}
-          duration={duration}
-          setDuration={setDuration}
+          // duration={duration}
+          // setDuration={setDuration}
           setIsPlayerActive={setIsPlayerActive}
           isPlayerActive={isPlayerActive}
+          handleSelection={handleSelection}
+          menu={menu}
         />
       )
     );
@@ -57,7 +62,7 @@ function App() {
 
   return (
     <div className="App">
-      {!isPlayerActive && <Title />}
+      {/* {!isPlayerActive && <Title />} */}
       {!isPlayerActive && (
         <Navbar handleSelection={handleSelection} menu={menu} />
       )}
