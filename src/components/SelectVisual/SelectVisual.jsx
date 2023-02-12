@@ -6,9 +6,9 @@ function SelectVisual({ menu, handleSelection }) {
     return <div>{item.name}</div>;
   });
   return (
-    <div>
+    <>
       <Navbar menu={menu} handleSelection={handleSelection} />
-    </div>
+    </>
   );
   // return <div className="select__container">{renderList}</div>;
 }

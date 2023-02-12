@@ -43,6 +43,6 @@
 
 .button:hover {
   cursor: pointer;
-  background-color: aquamarine;
-  color: violet;
+  background-color: rgb(232, 232, 241);
+  color: rgb(39, 48, 223);
 }

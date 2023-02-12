@@ -6,7 +6,7 @@ function Navbar({ handleSelection, menu }) {
     <div className="dropdown">
       <div className="drop-hover">
         <Menu handleSelection={handleSelection} menu={menu} />
-        <div className="nav-button">::select::</div>
+        <div className="nav-button">Utopics</div>
       </div>
     </div>
   );

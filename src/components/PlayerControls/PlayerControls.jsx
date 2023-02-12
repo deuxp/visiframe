@@ -38,9 +38,9 @@ function PlayerControls({
           <button className={style.button} onClick={handleNext}>
             skip
           </button>
-          <button className={style.button} onClick={handleExit}>
+          {/* <button className={style.button} onClick={handleExit}>
             main menu
-          </button>
+          </button> */}
         </div>
         <SelectVisual menu={menu} handleSelection={handleSelection} />
       </div>
