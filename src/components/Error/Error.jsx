@@ -1,10 +1,10 @@
 import React from "react";
 import style from "./Error.module.css";
 
-function Error({ setIsPlayerActive }) {
+function Error() {
   const { message, container, back, message_title, page } = style;
   const handleClick = () => {
-    setIsPlayerActive(false);
+    // setIsPlayerActive(false);
   };
   return (
     <div className={page}>

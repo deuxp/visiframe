@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Navbar from "./components/Navbar/Navbar";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
-import Error from "./components/Error/Error";
 
 function App() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [isPlayerActive, setIsPlayerActive] = useState(false);
+  const [isPlayerActive, setIsPlayerActive] = useState(true);
 
+  // must test this with more lists
   const handleSelection = uri => {
     window.bridge.getEmbeds(uri, selection => {
-      setEmbedList(prev => [...selection]);
-      setIsPlayerActive(!isPlayerActive);
+      if (selection?.length > 0) {
+        setEmbedList(prev => [...selection]);
+      }
     });
   };
 
@@ -54,7 +54,6 @@ function App() {
 
   const renderPlayers = embedList.map((embed, index) => {
     return (
-      isPlayerActive &&
       currentIndex === index && (
         <VideoPlayer
           menu={menu}
@@ -72,14 +71,8 @@ function App() {
 
   return (
     <div className="App">
-      {/* {!isPlayerActive && <Title />} */}
-      {!isPlayerActive && (
-        <Navbar handleSelection={handleSelection} menu={menu} />
-      )}
-      {isPlayerActive && embedList.length > 0 && renderPlayers}
-      {isPlayerActive && embedList.length === 0 && (
-        <Error setIsPlayerActive={setIsPlayerActive} />
-      )}
+      {embedList.length > 0 && renderPlayers}
+      {/* {embedList.length === 0 && <Error />} */}
     </div>
   );
 }

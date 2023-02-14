@@ -1,8 +1,11 @@
-import React from "react";
 import MenuItems from "../MenuItems/MenuItems";
-import "../Navbar/Navbar.css";
 
-function Menu({ menu, handleSelection }) {
+function Menu({
+  menu,
+  handleSelection,
+  dropup__content,
+  dropup__content__link,
+}) {
   const renderMenuItems = menu.map(item => {
     return (
       <MenuItems
@@ -10,12 +13,13 @@ function Menu({ menu, handleSelection }) {
         name={item.name}
         uri={item.uri}
         handleSelection={handleSelection}
+        dropup__content__link={dropup__content__link}
       />
     );
   });
   return (
     <>
-      <div className="menu__container">{renderMenuItems}</div>
+      <div className={dropup__content}>{renderMenuItems}</div>
     </>
   );
 }

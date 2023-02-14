@@ -4,16 +4,14 @@ import { useEffect, useRef } from "react";
 import Dropup from "../Dropup/Dropup";
 import PlayButtons from "../PlayButtons/PlayButtons";
 
-function ControlsGroup(
-  {
-    // handleNext,
-    // handlePause,
-    // handlePlay,
-    // menu,
-    // handleSelection,
-  }
-) {
-  const { isTrue, setIsTrue } = useTimeout(3000);
+function ControlsGroup({
+  handleNext,
+  handlePause,
+  handlePlay,
+  menu,
+  handleSelection,
+}) {
+  const { isTrue, setIsTrue } = useTimeout(5000);
   const controlsGroup = useRef(null);
 
   useEffect(() => {
@@ -31,10 +29,16 @@ function ControlsGroup(
       onMouseMove={handleMove}
       className={style.container}
     >
-      <div className={style.controls__group}>
-        <Dropup />
-        <PlayButtons />
-      </div>
+      {isTrue && (
+        <div className={style.controls__group}>
+          <Dropup menu={menu} handleSelection={handleSelection} />
+          <PlayButtons
+            handleNext={handleNext}
+            handlePlay={handlePlay}
+            handlePause={handlePause}
+          />
+        </div>
+      )}
     </div>
   );
 }

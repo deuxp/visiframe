@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useRef } from "react";
 import Player from "@vimeo/player";
 import style from "./VideoPlayer.module.css";
-import PlayerControls from "../PlayerControls/PlayerControls";
+import ControlsGroup from "../ControlsGroup/ControlsGroup";
 
 function VideoPlayer({
   menu,
@@ -10,8 +10,6 @@ function VideoPlayer({
   embedList,
   currentIndex,
   setCurrentIndex,
-  setIsPlayerActive,
-  isPlayerActive,
 }) {
   const element = useRef(null);
   const { name, uri } = embedList[currentIndex];
@@ -42,8 +40,6 @@ function VideoPlayer({
       if (newIndex === currentIndex) {
         newIndex = (currentIndex + 1) % embedList.length;
       }
-      // setCurrentIndex((currentIndex + 1) % embedList.length);
-      // console.log({ newIndex });
       setCurrentIndex(newIndex);
     });
   }, [currentIndex, setCurrentIndex, embedList.length]);
@@ -51,20 +47,10 @@ function VideoPlayer({
   const handlePause = () => {
     if (!player.current) return;
     player.current.pause();
-    // if (player.current) player.current.pause();
-    // else console.log("pause button not loaded");
   };
   const handlePlay = () => {
     if (!player.current) return;
     player.current.play();
-    // if (player.current) player.current.play();
-    // else console.log("play button not loaded");
-  };
-  const handleExit = () => {
-    if (!player.current) return;
-    setIsPlayerActive(!isPlayerActive);
-    // if (player.current) setIsPlayerActive(!isPlayerActive);
-    // else console.log("error exiting");
   };
   const handleNext = () => {
     if (!player.current) return;
@@ -78,10 +64,9 @@ function VideoPlayer({
   return (
     <>
       <div className={style["player-container open-it"]}>
-        <PlayerControls
+        <ControlsGroup
           menu={menu}
           handleSelection={handleSelection}
-          handleExit={handleExit}
           handleNext={handleNext}
           handlePause={handlePause}
           handlePlay={handlePlay}
