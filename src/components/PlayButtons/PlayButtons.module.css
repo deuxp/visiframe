@@ -13,6 +13,7 @@
   padding: 16px 24px;
   font-size: 16px;
   cursor: pointer;
+  text-align: center;
 }
 
 /* Prevent double borders */
@@ -28,4 +29,12 @@
 
 .button__group button:last-child {
   border-radius: 0 8px 8px 0;
+}
+
+.button__group button:hover svg path {
+  fill: var(--button-color);
+}
+
+.button__group button:hover svg rect {
+  fill: var(--button-color);
 }
