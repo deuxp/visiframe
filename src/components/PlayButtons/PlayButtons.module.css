@@ -1,0 +1,31 @@
+@import '../../variables.css';
+
+.button__group {
+  display: flex;
+}
+
+.button__group button {
+  color: white;
+  background-color: var(--button-color);
+  border: none;
+  border-left: 1px solid rgb(121, 119, 201);
+  color: white;
+  padding: 16px 24px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Prevent double borders */
+.button__group button:not(:last-child) {
+  border-right: none;
+}
+
+/* Add a background color on hover */
+.button__group button:hover {
+  background-color: white;
+  color: var(--button-color);
+}
+
+.button__group button:last-child {
+  border-radius: 0 8px 8px 0;
+}

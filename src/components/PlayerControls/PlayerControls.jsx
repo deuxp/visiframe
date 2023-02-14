@@ -1,7 +1,7 @@
 import style from "./PlayerControls.module.css";
 import useTimeout from "../../hooks/useTimeout";
 import { useEffect, useRef } from "react";
-import SelectVisual from "../SelectVisual/SelectVisual";
+import SelectVisual from "../Dropup/Dropup";
 
 function PlayerControls({
   handleExit,

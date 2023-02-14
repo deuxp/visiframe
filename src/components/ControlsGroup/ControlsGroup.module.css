@@ -1,0 +1,18 @@
+/* this is the 100x100 event listener & container */
+.container {
+  /* border: 5px red solid; */
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls__group {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  top: 30vh;
+}

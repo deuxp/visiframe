@@ -1,0 +1,55 @@
+@import "../../variables.css";
+
+.dropup {
+  position: relative;
+  display: inline-block;
+}
+
+.button {
+  color: white;
+  background-color: var(--button-color);
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  min-width: var(--select-min-width);
+  text-align: center;
+}
+
+/* Prop for <Menu/> */
+.dropup__content {
+  max-height: 0;
+  text-align: center;
+  overflow: hidden;
+  position: absolute;
+  bottom: 52px;
+  background-color: #f1f1f1;
+  width: max-content;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 8px 8px 0 0;
+  transition: 250ms;
+  min-width: 132px;
+}
+
+.dropup__content__link {
+  color: var(--button-color);
+  padding: 5px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropup__content__link:hover {
+  background-color: #ddd;
+}
+
+.dropup:hover .button {
+  background-color: white;
+  color: var(--button-color);
+  border-radius: 0 0 0 8px;
+}
+
+.dropup:hover .dropup__content {
+  max-height: 50vh;
+  overflow: auto;
+}
