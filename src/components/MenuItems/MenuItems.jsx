@@ -1,5 +1,4 @@
 import React from "react";
-import "../Navbar/Navbar.css";
 
 function MenuItems({ name, uri, handleSelection, dropup__content__link }) {
   const handleClick = uri => {

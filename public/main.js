@@ -136,7 +136,7 @@ ipcMain.handle("getMenuItems", () => {
 });
 
 ///////////////////////////////////
-// GET: list of Embedded Videos //
+// GET: Selection of Embedded Videos //
 /////////////////////////////////
 
 ipcMain.handle("getEmbeds", (event, select) => {

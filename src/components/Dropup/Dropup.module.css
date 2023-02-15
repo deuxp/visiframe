@@ -41,7 +41,8 @@
 }
 
 .dropup__content__link:hover {
-  background-color: #ddd;
+  background-color: #000;
+  color: white;
 }
 
 .dropup:hover .button {

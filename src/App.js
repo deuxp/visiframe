@@ -72,7 +72,7 @@ function App() {
   return (
     <div className="App">
       {embedList.length > 0 && renderPlayers}
-      {/* {embedList.length === 0 && <Error />} */}
+      {/* TODO: recieve error from getMenu, which activates the error; change error to relaod once internet is ready! {embedList.length === 0 && <Error />} */}
     </div>
   );
 }
