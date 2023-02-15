@@ -28,8 +28,8 @@
   right: 10px;
 }
 
-.back:hover {
-  mix-blend-mode: exclusion;
+.back:hover svg path {
+  stroke: #ffffff;
 }
 
 .button {

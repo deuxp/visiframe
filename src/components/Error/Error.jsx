@@ -1,10 +1,10 @@
 import React from "react";
 import style from "./Error.module.css";
 
-function Error() {
+function Error({ reloadMenu }) {
   const { message, container, back, message_title, page } = style;
   const handleClick = () => {
-    // setIsPlayerActive(false);
+    reloadMenu();
   };
   return (
     <div className={page}>
@@ -21,7 +21,8 @@ function Error() {
           </svg>
         </div>
         <div className={message_title}>Woopsies,</div>
-        <div className={message}>something went wrong ..</div>
+        <div className={message}>Something went wrong ..</div>
+        <div className={message}>Please check your internet connection</div>
       </div>
     </div>
   );
