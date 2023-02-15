@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
+import Error from "./components/Error/Error";
 
 function App() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isPlayerActive, setIsPlayerActive] = useState(true);
+  const WIDTH = window.screen.availWidth;
+  const HEIGHT = window.screen.availHeight;
 
   // must test this with more lists
   const handleSelection = uri => {
@@ -35,24 +38,26 @@ function App() {
     window.bridge.setWindowsize(size);
   };
 
-  // GETS initial data dump from ipcMain
-  useEffect(() => {
+  const loadMenu = () => {
     window.bridge.getMenuItems(response => {
       handleInitialGet(response)
         .then(menu => {
-          setAvailableWindowSize(
-            window.screen.availWidth,
-            window.screen.availHeight
-          );
+          setAvailableWindowSize(WIDTH, HEIGHT);
           return menu;
         })
         .then(menu => {
-          handleSelection(menu[1].uri);
+          if (menu === null) return;
+          handleSelection(menu[1].uri); // -------- change to [0] when more vids
         });
     });
+  };
+
+  // GETS initial data dump from ipcMain
+  useEffect(() => {
+    loadMenu();
   }, []);
 
-  const renderPlayers = embedList.map((embed, index) => {
+  const renderPlayers = embedList?.map((embed, index) => {
     return (
       currentIndex === index && (
         <VideoPlayer
@@ -73,6 +78,7 @@ function App() {
     <div className="App">
       {embedList.length > 0 && renderPlayers}
       {/* TODO: recieve error from getMenu, which activates the error; change error to relaod once internet is ready! {embedList.length === 0 && <Error />} */}
+      {menu === null && <Error reloadMenu={loadMenu} />}
     </div>
   );
 }
