@@ -114,6 +114,10 @@ function handleRequest(url, cb) {
       cb(json);
     });
   });
+  request.on("error", () => {
+    console.log("Something went wrong with the internet");
+    cb(null);
+  });
   request.end();
 }
 
@@ -123,16 +127,16 @@ function handleRequest(url, cb) {
 let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
   const url = `https://visii-api-production.up.railway.app/api/login/projects`;
-  handleRequest(url, response => {
-    try {
+  try {
+    handleRequest(url, response => {
+      console.log("from the net: ", response);
       const data = JSON.parse(response);
-      checklist = data.map(video => video.uri);
+      checklist = data?.map(video => video.uri);
       mainWindow.webContents.send("sendMenuItems", response);
-    } catch (error) {
-      console.log(error);
-      mainWindow.webContents.send("sendMenuItems", "[]");
-    }
-  });
+    });
+  } catch (error) {
+    mainWindow.webContents.send("sendMenuItems", "null");
+  }
 });
 
 ///////////////////////////////////
