@@ -1,5 +1,5 @@
 {
-  "name": "visiframe",
+  "name": "utopics-visualizer",
   "version": "0.1.0",
   "private": true,
   "main": "./public/main.js",
