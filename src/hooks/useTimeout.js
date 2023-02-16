@@ -5,11 +5,9 @@ function useTimeout(delay) {
 
   useEffect(() => {
     const id = setTimeout(() => {
-      // console.log("set false, timeId: ", id);
       setIsTrue(false);
     }, delay);
     return () => {
-      // console.log("--- cleared id: ", id);
       clearTimeout(id);
     };
   }, [isTrue, delay]);

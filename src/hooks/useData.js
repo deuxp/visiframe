@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
-import Error from "./components/Error/Error";
+import { useState, useEffect } from "react";
 
-function App() {
+function useData() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -57,30 +54,16 @@ function App() {
     loadMenu();
   }, []);
 
-  const renderPlayers = embedList?.map((embed, index) => {
-    return (
-      currentIndex === index && (
-        <VideoPlayer
-          menu={menu}
-          handleSelection={handleSelection}
-          key={index}
-          embedList={embedList}
-          setCurrentIndex={setCurrentIndex}
-          currentIndex={currentIndex}
-          setIsPlayerActive={setIsPlayerActive}
-          isPlayerActive={isPlayerActive}
-        />
-      )
-    );
-  });
-
-  return (
-    <div className="App">
-      {embedList.length > 0 && renderPlayers}
-      {/* TODO: recieve error from getMenu, which activates the error; change error to relaod once internet is ready! {embedList.length === 0 && <Error />} */}
-      {menu === null && <Error reloadMenu={loadMenu} />}
-    </div>
-  );
+  return {
+    menu,
+    embedList,
+    currentIndex,
+    setCurrentIndex,
+    isPlayerActive,
+    handleSelection,
+    setIsPlayerActive,
+    loadMenu,
+  };
 }
 
-export default App;
+export default useData;

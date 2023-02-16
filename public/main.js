@@ -72,7 +72,6 @@ app.on("web-contents-created", (event, contents) => {
 
     // prevent the event
     event.preventDefault();
-    // event.stopPropagation();
   });
 });
 
@@ -80,7 +79,6 @@ app.on("web-contents-created", (event, contents) => {
 app.on("web-contents-created", (event, contents) => {
   contents.on("will-navigate", (event, navigationUrl) => {
     event.preventDefault();
-    // event.stopPropagation();
   });
 });
 
@@ -129,7 +127,6 @@ ipcMain.handle("getMenuItems", () => {
   const url = `https://visii-api-production.up.railway.app/api/login/projects`;
   try {
     handleRequest(url, response => {
-      console.log("from the net: ", response);
       const data = JSON.parse(response);
       checklist = data?.map(video => video.uri);
       mainWindow.webContents.send("sendMenuItems", response);
@@ -145,7 +142,7 @@ ipcMain.handle("getMenuItems", () => {
 
 ipcMain.handle("getEmbeds", (event, select) => {
   if (checklist.includes(select)) {
-    console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
+    // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
     const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
     handleRequest(url, response => {
       mainWindow.webContents.send("embeddedVideoList", response);
