@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function useData() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlayerActive, setIsPlayerActive] = useState(true);
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
