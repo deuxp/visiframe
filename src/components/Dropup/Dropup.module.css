@@ -45,6 +45,11 @@
   color: white;
 }
 
+.dropup__content__link:active {
+  background-color: var(--button-color);
+  color: white;
+}
+
 .dropup:hover .button {
   background-color: white;
   color: var(--button-color);
