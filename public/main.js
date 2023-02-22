@@ -145,6 +145,7 @@ ipcMain.handle("getEmbeds", (event, select) => {
     // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
     const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
     handleRequest(url, response => {
+      console.log({ response });
       mainWindow.webContents.send("embeddedVideoList", response);
     });
   }

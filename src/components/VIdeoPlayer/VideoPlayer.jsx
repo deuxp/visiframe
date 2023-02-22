@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import style from "./VideoPlayer.module.css";
 import ControlsGroup from "../ControlsGroup/ControlsGroup";
 import useVimeo from "../../hooks/useVimeo";
@@ -12,6 +12,11 @@ function VideoPlayer({
 }) {
   const { name, uri, height, width, handleNext, handlePause, handlePlay } =
     useVimeo(embedList, currentIndex, setCurrentIndex);
+
+  // console.log({ uri });
+  useEffect(() => {
+    console.log("iframe loaded");
+  });
 
   return (
     <>

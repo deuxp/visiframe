@@ -18,6 +18,7 @@ const indexBridge = {
     ipcRenderer.invoke("getMenuItems");
     const listener = ipcRenderer.on("sendMenuItems", (e, response) => {
       const json = JSON.parse(response);
+      console.log(json);
       cb(json);
       listener.removeAllListeners("sendMenuItems");
     });

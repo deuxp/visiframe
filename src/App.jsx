@@ -2,6 +2,7 @@ import "./App.css";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
+import { useEffect } from "react";
 
 function App() {
   const {
@@ -14,6 +15,11 @@ function App() {
     handleSelection,
     loadMenu,
   } = useData();
+
+  useEffect(() => {
+    console.log("app.js loaded");
+    console.log({ embedList });
+  });
 
   const renderPlayers = embedList?.map((embed, index) => {
     return (
