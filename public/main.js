@@ -154,10 +154,6 @@ ipcMain.handle("getEmbeds", (event, select) => {
     // const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
     handleRequest(url, response => {
       console.log({ response });
-      if (response === null) {
-        mainWindow.webContents.send("embeddedVideoList", response);
-        return;
-      }
       mainWindow.webContents.send("embeddedVideoList", response);
     });
   }
