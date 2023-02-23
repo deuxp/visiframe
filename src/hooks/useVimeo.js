@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Player from "@vimeo/player";
 
-function useVimeo(embedList, currentIndex, setCurrentIndex) {
+function useVimeo(embedList, currentIndex, setCurrentIndex, handleLoading) {
   const element = useRef(null);
   const player = useRef(null);
   const { name, uri } = embedList[currentIndex];
@@ -21,7 +21,28 @@ function useVimeo(embedList, currentIndex, setCurrentIndex) {
     // });
     player.current.on("play", playData => {
       console.log("playing");
+      handleLoading(false);
     });
+
+    player.current.on("error", error => {
+      console.log("player error: ", error.message);
+    });
+
+    player.current.on("bufferstart", () => {
+      handleLoading(true).then(() => {
+        console.log("buffering ...");
+      });
+    });
+    player.current.on("bufferend", () => {
+      handleLoading(false).then(() => {
+        console.log("end of buffering.");
+      });
+    });
+    // player.current.on("loaded", () => {
+    //   handleLoading(false).then(() => {
+    //     console.log("...loaded");
+    //   });
+    // });
 
     player.current.on("ended", data => {
       console.log("ended: ", data);
@@ -30,9 +51,13 @@ function useVimeo(embedList, currentIndex, setCurrentIndex) {
       if (newIndex === currentIndex) {
         newIndex = (currentIndex + 1) % embedList.length;
       }
-      setCurrentIndex(newIndex);
+      handleLoading(true).then(() => {
+        setCurrentIndex(newIndex);
+      });
     });
-  }, [currentIndex, setCurrentIndex, embedList.length]);
+  }, []);
+  // }, [currentIndex, handleLoading]);
+  // }, [currentIndex, setCurrentIndex, embedList.length, handleLoading]);
 
   const handlePause = () => {
     if (!player.current) return;
@@ -50,7 +75,16 @@ function useVimeo(embedList, currentIndex, setCurrentIndex) {
     }
     setCurrentIndex(newIndex);
   };
-  return { name, uri, height, width, handleNext, handlePause, handlePlay };
+
+  return {
+    name,
+    uri,
+    height,
+    width,
+    handleNext,
+    handlePause,
+    handlePlay,
+  };
 }
 
 export default useVimeo;
