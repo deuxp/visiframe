@@ -4,7 +4,7 @@ function useData() {
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlayerActive, setIsPlayerActive] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
 
@@ -12,7 +12,25 @@ function useData() {
   const handleSelection = uri => {
     window.bridge.getEmbeds(uri, selection => {
       if (selection?.length > 0) {
-        setEmbedList(prev => [...selection]);
+        try {
+          const newList = [...selection];
+          setEmbedList(prev => newList);
+          setCurrentIndex(0);
+        } catch (err) {
+          console.log("error with menu selection", err);
+        }
+      }
+    });
+  };
+
+  const handleLoading = bool => {
+    return new Promise((resolve, reject) => {
+      try {
+        setIsLoading(bool);
+        resolve(true);
+      } catch (error) {
+        console.log(error);
+        reject(false);
       }
     });
   };
@@ -44,7 +62,7 @@ function useData() {
         })
         .then(menu => {
           if (menu === null) return;
-          handleSelection(menu[1].uri); // -------- change to [0] when more vids
+          handleSelection(menu[1].uri); // -------- index corresponds to category of vids
         });
     });
   };
@@ -59,10 +77,10 @@ function useData() {
     embedList,
     currentIndex,
     setCurrentIndex,
-    isPlayerActive,
     handleSelection,
-    setIsPlayerActive,
     loadMenu,
+    isLoading,
+    handleLoading,
   };
 }
 
