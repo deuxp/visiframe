@@ -6,13 +6,15 @@
   position: absolute;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-start;
+  z-index: 2;
 }
 
 .controls__group {
   display: flex;
   flex-direction: row;
   position: relative;
-  top: 30vh;
+  bottom: 50px;
+  left: 40px;
 }

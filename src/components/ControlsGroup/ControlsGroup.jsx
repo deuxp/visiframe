@@ -11,7 +11,7 @@ function ControlsGroup({
   menu,
   handleSelection,
 }) {
-  const { isTrue, setIsTrue } = useTimeout(5000);
+  const { isTrue, setIsTrue } = useTimeout(6000);
   const controlsGroup = useRef(null);
 
   useEffect(() => {
