@@ -2,7 +2,7 @@ import "./App.css";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 function App() {
   const {
@@ -10,18 +10,17 @@ function App() {
     embedList,
     currentIndex,
     setCurrentIndex,
-    isPlayerActive,
-    setIsPlayerActive,
     handleSelection,
     loadMenu,
+    isLoading,
+    handleLoading,
   } = useData();
 
-  useEffect(() => {
-    console.log("app.js loaded");
-    console.log({ embedList });
-  });
+  // useEffect(() => {
+  //   console.log("embedslist", embedList);
+  // }, [embedList]);
 
-  const renderPlayers = embedList?.map((embed, index) => {
+  const renderPlayers = embedList.map((embed, index) => {
     return (
       currentIndex === index && (
         <VideoPlayer
@@ -31,8 +30,8 @@ function App() {
           embedList={embedList}
           setCurrentIndex={setCurrentIndex}
           currentIndex={currentIndex}
-          setIsPlayerActive={setIsPlayerActive}
-          isPlayerActive={isPlayerActive}
+          isLoading={isLoading}
+          handleLoading={handleLoading}
         />
       )
     );
