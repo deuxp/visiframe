@@ -1,6 +1,10 @@
-const { app, BrowserWindow, ipcMain, net, session } = require("electron");
+const { app, BrowserWindow, ipcMain, net } = require("electron");
 const path = require("path");
-const URL = require("url").URL;
+const isDev = require("electron-is-dev");
+// const URL = require("url").URL;
+if (require("electron-squirrel-startup")) {
+  app.quit();
+}
 
 let mainWindow;
 const createWindow = () => {
@@ -26,10 +30,13 @@ const createWindow = () => {
   //     action: "deny",
   //   };
   // });
-  const appURL = "http://localhost:3000";
-  mainWindow.loadURL(appURL);
+  mainWindow.loadURL(
+    isDev
+      ? "http://localhost:3000"
+      : `file://${path.join(__dirname, "../build/index.html")}`
+  );
 
-  if (!app.isPackaged) {
+  if (isDev) {
     mainWindow.webContents.openDevTools({ mode: "detach" });
   }
 };
@@ -93,12 +100,12 @@ app.on("web-contents-created", (event, contents) => {
 // helper: handleRequest //
 //////////////////////////
 
-function validateSender(frame) {
-  // Value the host of the URL using an actual URL parser and an allowlist
-  if (new URL(frame.url).host === "https://visii-api-production.up.railway.app")
-    return true;
-  return false;
-}
+// function validateSender(frame) {
+//   // Value the host of the URL using an actual URL parser and an allowlist
+//   if (new URL(frame.url).host === "https://visii-api-production.up.railway.app")
+//     return true;
+//   return false;
+// }
 
 function handleRequest(url, cb) {
   const request = net.request(url);
