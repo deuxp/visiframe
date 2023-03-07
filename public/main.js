@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, net } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
-// const URL = require("url").URL;
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
@@ -131,8 +130,8 @@ function handleRequest(url, cb) {
 ///////////////////////////
 let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
-  const url = "http://localhost:8080/api/login/projects";
-  // const url = `https://visii-api-production.up.railway.app/api/login/projects`;
+  // const url = "http://localhost:8080/api/login/projects";
+  const url = `https://visii-api-production.up.railway.app/api/login/projects`;
   try {
     handleRequest(url, response => {
       if (response.includes("<")) {
@@ -157,8 +156,8 @@ ipcMain.handle("getMenuItems", () => {
 ipcMain.handle("getEmbeds", (event, select) => {
   if (checklist.includes(select)) {
     // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
-    const url = `http://localhost:8080/api/login/videos/${select}`;
-    // const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
+    // const url = `http://localhost:8080/api/login/videos/${select}`;
+    const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
     handleRequest(url, response => {
       // console.log({ response });
       mainWindow.webContents.send("embeddedVideoList", response);
