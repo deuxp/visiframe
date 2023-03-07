@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-// import style from "./VideoPlayer.module.css";
+// import { useEffect } from "react";
 import ControlsGroup from "../ControlsGroup/ControlsGroup";
 import useVimeo from "../../hooks/useVimeo";
 import Loading from "../Loading/Loading";
