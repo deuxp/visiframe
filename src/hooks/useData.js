@@ -10,7 +10,7 @@ function useData() {
 
   // must test this with more lists
   const handleSelection = uri => {
-    window.bridge.getEmbeds(uri, selection => {
+    window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
       if (selection?.length > 0) {
         try {
           const newList = [...selection];
@@ -54,7 +54,7 @@ function useData() {
   };
 
   const loadMenu = () => {
-    window.bridge.getMenuItems(response => {
+    window.bridge.getMenuItems("sendMenuItems", response => {
       handleInitialGet(response)
         .then(menu => {
           setAvailableWindowSize(WIDTH, HEIGHT);
