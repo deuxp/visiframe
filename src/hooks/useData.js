@@ -5,8 +5,14 @@ function useData() {
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [terms, setTerms] = useState(window.localStorage.termcheck);
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
+
+  const handleSetTerms = arg => {
+    window.localStorage.termcheck = "true";
+    setTerms(arg);
+  };
 
   // must test this with more lists
   const handleSelection = uri => {
@@ -81,6 +87,8 @@ function useData() {
     loadMenu,
     isLoading,
     handleLoading,
+    handleSetTerms,
+    terms,
   };
 }
 

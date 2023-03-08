@@ -2,7 +2,7 @@ import "./App.css";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
-// import { useEffect } from "react";
+import TermsOfService from "./components/TermsOfService/TermsOfService";
 
 function App() {
   const {
@@ -14,6 +14,8 @@ function App() {
     loadMenu,
     isLoading,
     handleLoading,
+    handleSetTerms,
+    terms,
   } = useData();
 
   // useEffect(() => {
@@ -39,8 +41,8 @@ function App() {
 
   return (
     <div className="App">
-      {embedList.length > 0 && renderPlayers}
-      {/* TODO: recieve error from getMenu, which activates the error; change error to relaod once internet is ready! {embedList.length === 0 && <Error />} */}
+      {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
+      {embedList.length > 0 && terms && renderPlayers}
       {menu === null && <Error reloadMenu={loadMenu} />}
     </div>
   );
