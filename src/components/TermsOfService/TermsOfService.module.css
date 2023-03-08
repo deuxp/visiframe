@@ -1,0 +1,30 @@
+/* .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+} */
+
+.box {
+  position: absolute;
+  margin: auto;
+  inset: 0;
+  height: 60%;
+  width: 60%;
+  background-color: rgb(183, 183, 183);
+  overflow-y: scroll;
+}
+
+.submit {}
+
+.h2 {
+  text-align: center;
+}
+
+.box p {
+  position: relative;
+  /* padding: 5px 5px 8px 5px; */
+  margin: 1em;
+  margin-right: 2em;
+  color: rgb(90, 83, 83);
+}
