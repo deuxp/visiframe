@@ -7,15 +7,39 @@
 
 .box {
   position: absolute;
+  border-radius: 5px;
   margin: auto;
   inset: 0;
   height: 60%;
   width: 60%;
-  background-color: rgb(183, 183, 183);
+  background-color: #fff;
   overflow-y: scroll;
+  color: var(--button-color)
 }
 
-.submit {}
+.submit {
+  position: absolute;
+  border-radius: 5px;
+  /* height: 3em; */
+  padding: 1em;
+  max-height: fit-content;
+  max-width: fit-content;
+  background-color: #fff;
+  margin: auto;
+  bottom: 10%;
+  left: 0;
+  right: 0;
+
+}
+
+.submit button {
+  border: none;
+  background-color: var(--button-color);
+  color: #fff;
+  margin-left: 1em;
+  padding: 8px 22px 8px 22px;
+  border-radius: 5px;
+}
 
 .h2 {
   text-align: center;
@@ -23,8 +47,6 @@
 
 .box p {
   position: relative;
-  /* padding: 5px 5px 8px 5px; */
   margin: 1em;
   margin-right: 2em;
-  color: rgb(90, 83, 83);
 }
