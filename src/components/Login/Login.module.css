@@ -1,0 +1,25 @@
+.box {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin: auto;
+  inset: 0;
+  height: 40%;
+  width: 30%;
+  background-color: #fff;
+  overflow-y: scroll;
+  color: var(--button-color);
+
+  left: 0;
+  right: auto;
+}
+
+.box input {
+  font-size: 1em;
+  border: none;
+  border-bottom: solid 1px #000;
+  margin-bottom: 1em;
+}
