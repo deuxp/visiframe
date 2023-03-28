@@ -49,6 +49,52 @@ function useFormData() {
     if (re.test(email)) return true;
     return false;
   }
+
+  ///////////////
+  // REGISTER //
+  /////////////
+
+  const register = (email, password, password_confirm, name) => {
+    return new Promise((resolve, reject) => {
+      const credentials = { email, password, password_confirm, name };
+      window.bridge.register(credentials, res => {
+        if (res.register) {
+          clearFormData();
+          setNeedToRegister(true); // show login view
+          setMessage("Please re-enter your login information");
+          resolve(res.register);
+        }
+        if (!res.register) {
+          console.log("user not registered try again later");
+          clearFormData();
+          setMessage("Failed to register new user, please try again");
+          reject(res.register);
+        }
+      });
+    });
+  };
+
+  ////////////
+  // LOGIN //
+  //////////
+
+  function login(email, password) {
+    return new Promise((resolve, reject) => {
+      const credentials = { email, password };
+      window.bridge.login(credentials, res => {
+        clearFormData();
+        if (res.login) {
+          clearMsgs();
+          resolve(res.login);
+        }
+        if (!res.login) {
+          setMessage("Failed to login, please try again");
+          reject(res.login);
+        }
+      });
+    });
+  }
+
   return {
     email,
     password,
@@ -73,6 +119,8 @@ function useFormData() {
     handleRegisterToggle,
     handleResetView,
     validEmail,
+    login,
+    register,
   };
 }
 

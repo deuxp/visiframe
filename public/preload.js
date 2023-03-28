@@ -35,6 +35,27 @@ const indexBridge = {
   setWindowsize: size => {
     ipcRenderer.invoke("resizeWindow", size);
   },
+  login: (credentials, callback) => {
+    const creds = JSON.stringify(credentials);
+    ipcRenderer.invoke("login", creds);
+    const listener = ipcRenderer.on("renderLogin", (event, res) => {
+      const data = JSON.parse(res);
+      // >>> { login: true }
+      console.log(data);
+      callback(data);
+      listener.removeAllListeners("renderLogin");
+    });
+  },
+  register: (credentials, callback) => {
+    const creds = JSON.stringify(credentials);
+    ipcRenderer.invoke("register", creds);
+    const listener = ipcRenderer.on("renderRegister", (event, res) => {
+      const data = JSON.parse(res);
+      console.log(data);
+      callback(data);
+      listener.removeAllListeners("renderRegister");
+    });
+  },
 };
 
 process.once("loaded", () => {

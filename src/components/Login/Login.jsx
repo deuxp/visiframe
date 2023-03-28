@@ -27,39 +27,9 @@ function Login({ setIsLoggedIn }) {
     handleRegisterToggle,
     handleResetView,
     validEmail,
+    login,
+    register,
   } = useFormData();
-
-  const login = (email, password) => {
-    const credentials = { email, password };
-    window.bridge.login(credentials, res => {
-      clearFormData();
-      if (res.login) {
-        setIsLoggedIn(true);
-        clearMsgs();
-      }
-      if (!res.login) {
-        setMessage("Failed to login, please try again");
-      }
-    });
-  };
-
-  const register = (email, password, password_confirm, name) => {
-    const credentials = { email, password, password_confirm, name };
-    window.bridge.register(credentials, res => {
-      console.log("what is access: ", res);
-      if (res.register) {
-        // login(email, password, password_confirm);
-        clearFormData();
-        setNeedToRegister(true); // show login view
-        setMessage("Please re-enter your login information");
-      }
-      if (!res.register) {
-        console.log("user not registered try again later");
-        clearFormData();
-        setMessage("Failed to register new user, please try again");
-      }
-    });
-  };
 
   const resetPassword = email => {
     window.bridge.resetPassword(email, res => {
@@ -90,7 +60,7 @@ function Login({ setIsLoggedIn }) {
     });
   };
 
-  const handleOnSubmit = e => {
+  const handleOnSubmit = async e => {
     e.preventDefault();
     clearMsgs();
 
@@ -110,8 +80,23 @@ function Login({ setIsLoggedIn }) {
     // Action:
     if (reset) return resetPassword(email);
     if (newPassword) return postNewPassword(email, password, confirm);
-    if (needToRegister) return login(email, password);
-    if (!needToRegister) return register(email, password, confirm, name);
+    if (needToRegister) {
+      login(email, password)
+        .then(() => {
+          setIsLoggedIn(true);
+        })
+        .catch(err => {
+          console.log("401");
+        });
+      return;
+    }
+
+    if (!needToRegister) {
+      register(email, password, confirm, name).catch(err => {
+        console.log("401");
+      });
+      return;
+    }
   };
 
   return (
