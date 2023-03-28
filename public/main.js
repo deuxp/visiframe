@@ -238,6 +238,50 @@ async function registerNewUser(url, credentials) {
   }
 }
 
+async function resetPassword(url, email) {
+  try {
+    const res = await axios.post(
+      url,
+      {
+        email,
+      },
+      { withCredentials: true }
+    );
+    const data = JSON.stringify(res.data);
+    return data;
+  } catch (error) {
+    console.log(
+      "Main::problem resetting password, server error?: ",
+      error.message
+    );
+    return '{"reset": false}';
+  }
+}
+
+async function postNewPassword(url, credentials) {
+  const { email, password, password_confirm } = credentials;
+  // console.log(credentials);
+  try {
+    const res = await axios.post(
+      url,
+      {
+        email,
+        password,
+        password_confirm,
+      },
+      { withCredentials: true }
+    );
+    const data = JSON.stringify(res.data);
+    return data;
+  } catch (error) {
+    console.log(
+      "Main::problem posting new password, server error?: ",
+      error.message
+    );
+    return '{"update": false}';
+  }
+}
+
 ////////////
 // LOGIN //
 //////////
@@ -260,6 +304,31 @@ ipcMain.handle("register", async (event, credentials) => {
   if (!validateSenderFrame(senderFrame)) return;
   const registerStatus = await registerNewUser(register, credentials);
   mainWindow.webContents.send("renderRegister", registerStatus);
+});
+
+////////////// ///////
+// RESET PASSWORD  //
+////////////// /////
+
+ipcMain.handle("resetPassword", async (event, email) => {
+  const senderFrame = event.senderFrame.url;
+  if (!validateSenderFrame(senderFrame)) return;
+  // POST options function
+  const newPassword = await resetPassword(reset, email);
+  console.log(newPassword);
+  mainWindow.webContents.send("renderResetPassword", newPassword);
+});
+
+////////////// /////////
+// POST NEW PASSWORD //
+////////////// ///////
+
+ipcMain.handle("postNewPassword", async (event, credentials) => {
+  credentials = JSON.parse(credentials);
+  const senderFrame = event.senderFrame.url;
+  if (!validateSenderFrame(senderFrame)) return;
+  const postPassword = await postNewPassword(newPassword, credentials);
+  mainWindow.webContents.send("renderNewPassword", postPassword);
 });
 
 /////////////////////////////

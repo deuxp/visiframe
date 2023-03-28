@@ -56,6 +56,25 @@ const indexBridge = {
       listener.removeAllListeners("renderRegister");
     });
   },
+  resetPassword: (email, callback) => {
+    ipcRenderer.invoke("resetPassword", email);
+    const listener = ipcRenderer.on("renderResetPassword", (e, res) => {
+      const data = JSON.parse(res);
+      console.log(data);
+      callback(data);
+      listener.removeAllListeners("renderResetPassword");
+    });
+  },
+  postNewPassword: (credentials, callback) => {
+    const creds = JSON.stringify(credentials);
+    ipcRenderer.invoke("postNewPassword", creds);
+    const listener = ipcRenderer.on("renderNewPassword", (event, res) => {
+      const data = JSON.parse(res);
+      console.log(data);
+      callback(data);
+      listener.removeAllListeners("renderNewPassword");
+    });
+  },
 };
 
 process.once("loaded", () => {
