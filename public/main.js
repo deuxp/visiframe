@@ -1,6 +1,9 @@
-const { app, BrowserWindow, ipcMain, net } = require("electron");
+const { app, BrowserWindow, ipcMain, net, session } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
+const axios = require("axios");
+const { get } = require("http");
+
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
@@ -40,22 +43,16 @@ const createWindow = () => {
   }
 };
 
+let sesh;
 app.enableSandbox(); // enabled globally
-app.whenReady().then(() => {
-  createWindow();
-
-  // session
-  //   .fromPartition("")
-  //   .setPermissionRequestHandler((webContents, permission, callback) => {
-  //     return callback(false);
-  //   });
-
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+app
+  .whenReady()
+  .then(() => {
+    createWindow();
+  })
+  .then(() => {
+    sesh = session.defaultSession;
   });
-});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -63,6 +60,11 @@ app.on("window-all-closed", () => {
   }
 });
 
+app.on("activate", () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});
 /////////////////////////
 // Security listeners //
 ///////////////////////
@@ -95,9 +97,71 @@ app.on("web-contents-created", (event, contents) => {
   });
 });
 
-////////////////////////////
-// helper: handleRequest //
-//////////////////////////
+///////////////
+// API URLS //
+/////////////
+
+const deployBase = "http://localhost:8080";
+
+const refresh = `${deployBase}/api/user/refresh`;
+const login = `${deployBase}/api/user/login`;
+const register = `${deployBase}/api/user/register`;
+const reset = `${deployBase}/api/reset`;
+const newPassword = `${deployBase}/api/reset/new-password`;
+
+//////////////////////
+// Session-cookies //
+////////////////////
+
+function splitCookie(string) {
+  let partition = string.indexOf("=");
+  let end = string.indexOf(";");
+  let name = string.slice(0, partition);
+  let value = string.slice(partition + 1, end);
+
+  return { name, value };
+}
+
+// Set a cookie with the given cookie data;
+// may overwrite equivalent cookies if they exist.
+function setCookie(rawCookie) {
+  const { name, value } = splitCookie(rawCookie);
+  const cookie = {
+    url: deployBase,
+    // url: "http://localhost:8080",
+    name,
+    value,
+    httpOnly: true,
+    path: "/",
+    secure: true,
+    sameSite: "strict",
+    expirationDate: 1742054595000,
+  };
+  sesh.cookies.set(cookie).then(
+    () => {
+      console.log(`\n${name} cookie is set\n`);
+    },
+    error => {
+      console.error(error);
+    }
+  );
+}
+
+//////////////
+// HELPERS //
+////////////
+
+function validateSenderFrame(frame) {
+  if (isDev) {
+    const host = "localhost:3000";
+    const frameSender = new URL(frame).host;
+    return frameSender === host;
+  }
+  const ext = ".html";
+  const name = "index";
+  const file = path.parse(frame);
+  return file.name === name && file.ext === ext;
+}
 
 // function validateSender(frame) {
 //   // Value the host of the URL using an actual URL parser and an allowlist
@@ -106,38 +170,115 @@ app.on("web-contents-created", (event, contents) => {
 //   return false;
 // }
 
-function handleRequest(url, cb) {
-  const request = net.request(url);
-  request.on("response", response => {
-    const data = [];
-    response.on("data", chunk => {
-      data.push(chunk);
+function handleRequest(options, cb) {
+  try {
+    const request = net.request(options);
+    request.on("response", response => {
+      const data = [];
+      response.on("data", chunk => {
+        data.push(chunk);
+      });
+      response.on("end", () => {
+        const json = Buffer.concat(data).toString();
+        cb(json);
+      });
     });
-    response.on("end", () => {
-      const json = Buffer.concat(data).toString();
-      cb(json);
+    request.on("error", () => {
+      console.log("Something went wrong with the internet");
+      cb(null);
     });
-  });
-  request.on("error", () => {
-    console.log("Something went wrong with the internet");
+    request.end();
+  } catch (error) {
+    console.log("handleRequest: ", error);
     cb(null);
-  });
-  request.end();
+  }
 }
+
+async function postLoginCredentials(url, credentials) {
+  try {
+    const res = await axios.post(
+      url,
+      {
+        email: credentials?.email,
+        password: credentials?.password,
+      },
+      { withCredentials: true }
+    );
+    // array of 2 raw cookie dough
+    const cookies = res.headers["set-cookie"];
+    setCookie(cookies[0]);
+    setCookie(cookies[1]);
+
+    console.log(res.data);
+    const data = JSON.stringify(res.data);
+    return data;
+  } catch (error) {
+    console.log("login request: ", error.message);
+    return '{"login": false}';
+  }
+}
+
+async function registerNewUser(url, credentials) {
+  try {
+    const res = await axios.post(
+      url,
+      {
+        email: credentials?.email,
+        password: credentials?.password,
+        password_confirm: credentials?.password_confirm,
+        name: credentials?.name,
+      },
+      { withCredentials: true }
+    );
+    const data = JSON.stringify(res.data);
+    return data;
+  } catch (error) {
+    console.log("New user not registered: ", error.message);
+    return '{"register": false}';
+  }
+}
+
+////////////
+// LOGIN //
+//////////
+
+ipcMain.handle("login", async (event, credentials) => {
+  credentials = JSON.parse(credentials);
+  const senderFrame = event.senderFrame.url;
+  if (!validateSenderFrame(senderFrame)) return;
+  const loginStatus = await postLoginCredentials(login, credentials);
+  mainWindow.webContents.send("renderLogin", loginStatus);
+});
+
+//////////////
+// REGISTER //
+//////////////
+
+ipcMain.handle("register", async (event, credentials) => {
+  credentials = JSON.parse(credentials);
+  const senderFrame = event.senderFrame.url;
+  if (!validateSenderFrame(senderFrame)) return;
+  const registerStatus = await registerNewUser(register, credentials);
+  mainWindow.webContents.send("renderRegister", registerStatus);
+});
 
 /////////////////////////////
 // GET: inital menu items //
 ///////////////////////////
 let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
-  const url = "http://localhost:8080/api/projects";
-  // const url = `https://visii-api-production.up.railway.app/api/login/projects`;
+  // const url = "http://localhost:8080/api/projects";
+  const getOptions = {
+    url: `${deployBase}/api/projects`,
+    method: "GET",
+    credentials: "include",
+    session: sesh,
+  };
   try {
-    handleRequest(url, response => {
+    handleRequest(getOptions, response => {
       if (response.includes("<")) {
         console.log("404");
-        mainWindow.webContents.send("sendMenuItems", "{ null }");
-        return;
+        return mainWindow.webContents.send("sendMenuItems", "{ null }");
       }
       const data = JSON.parse(response);
       checklist = data?.map(video => video.uri);
@@ -154,12 +295,16 @@ ipcMain.handle("getMenuItems", () => {
 /////////////////////////////////
 
 ipcMain.handle("getEmbeds", (event, select) => {
+  // const url = `http://localhost:8080/api/projects/videos/${select}`;
   if (checklist.includes(select)) {
+    const getOptions = {
+      url: `${deployBase}/api/projects/videos/${select}`,
+      method: "GET",
+      credentials: "include",
+      session: sesh,
+    };
     // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
-    const url = `http://localhost:8080/api/projects/videos/${select}`;
-    // const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
-    handleRequest(url, response => {
-      // console.log({ response });
+    handleRequest(getOptions, response => {
       mainWindow.webContents.send("embeddedVideoList", response);
     });
   }
