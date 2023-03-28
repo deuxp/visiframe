@@ -72,7 +72,6 @@ function useFormData() {
     window.bridge.register(credentials, res => {
       console.log("what is access: ", res);
       if (res.register) {
-        // login(email, password, password_confirm);
         clearFormData();
         setNeedToRegister(true); // show login view
         setMessage("Please re-enter your login information");
