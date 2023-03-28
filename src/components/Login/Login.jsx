@@ -16,87 +16,20 @@ function Login({ setIsLoggedIn }) {
     setPassword,
     setConfirm,
     setName,
-    setNeedToRegister,
-    setNewPassword,
-    setReset,
-    setMessage,
-    // clears
-    clearFormData,
-    clearMsgs,
     backToLogin,
     handleRegisterToggle,
     handleResetView,
-    validEmail,
-    login,
-    register,
+    submitForm,
   } = useFormData();
 
-  const resetPassword = email => {
-    window.bridge.resetPassword(email, res => {
-      if (!res.reset) {
-        setMessage("User not found, please re-enter email");
-        setEmail("");
-        console.log("password reset error");
-      }
-      if (res.reset) {
-        setNewPassword(res.reset);
-        setReset(false);
-      }
-    });
-  };
-
-  const postNewPassword = (email, password, password_confirm) => {
-    const credentials = { email, password, password_confirm };
-    window.bridge.postNewPassword(credentials, res => {
-      if (!res.update) {
-        return setMessage("Please check your email");
-      }
-      // this is where you clear everything and login
-      if (res.update) {
-        clearFormData();
-        setNeedToRegister(true); // show login view
-        setMessage("Please re-enter your login information");
-      }
-    });
-  };
-
-  const handleOnSubmit = async e => {
-    e.preventDefault();
-    clearMsgs();
-
-    // matching passwords:
-    if ((!needToRegister || newPassword) && password !== confirm) {
-      return setMessage("Passwords do not match");
-    }
-    // Validate Fields:
-    // Login: if "needToRegister"
-    if (needToRegister && !reset && (!email || !password))
-      return setMessage("*Please fill required fields");
-    // Register: if "!needToRegister"
-    if (!needToRegister && (!name || !email || !password))
-      return setMessage("*Please fill required fields");
-    if (!validEmail(email)) return setMessage("Not a valid email address");
-
-    // Action:
-    if (reset) return resetPassword(email);
-    if (newPassword) return postNewPassword(email, password, confirm);
-    if (needToRegister) {
-      login(email, password)
-        .then(() => {
-          setIsLoggedIn(true);
-        })
-        .catch(err => {
-          console.log("401");
-        });
-      return;
-    }
-
-    if (!needToRegister) {
-      register(email, password, confirm, name).catch(err => {
+  const handleOnSubmit = e => {
+    submitForm(e)
+      .then(() => {
+        setIsLoggedIn(true);
+      })
+      .catch(() => {
         console.log("401");
       });
-      return;
-    }
   };
 
   return (
