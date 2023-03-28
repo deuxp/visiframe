@@ -130,13 +130,13 @@ function handleRequest(url, cb) {
 ///////////////////////////
 let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
-  // const url = "http://localhost:8080/api/login/projects";
-  const url = `https://visii-api-production.up.railway.app/api/login/projects`;
+  const url = "http://localhost:8080/api/projects";
+  // const url = `https://visii-api-production.up.railway.app/api/login/projects`;
   try {
     handleRequest(url, response => {
       if (response.includes("<")) {
         console.log("404");
-        mainWindow.webContents.send("sendMenuItems", "null");
+        mainWindow.webContents.send("sendMenuItems", "{ null }");
         return;
       }
       const data = JSON.parse(response);
@@ -144,8 +144,8 @@ ipcMain.handle("getMenuItems", () => {
       mainWindow.webContents.send("sendMenuItems", response);
     });
   } catch (error) {
-    console.log({ error });
-    mainWindow.webContents.send("sendMenuItems", "null");
+    console.log({ error: error.message });
+    mainWindow.webContents.send("sendMenuItems", "{ null }");
   }
 });
 
@@ -156,8 +156,8 @@ ipcMain.handle("getMenuItems", () => {
 ipcMain.handle("getEmbeds", (event, select) => {
   if (checklist.includes(select)) {
     // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
-    // const url = `http://localhost:8080/api/login/videos/${select}`;
-    const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
+    const url = `http://localhost:8080/api/projects/videos/${select}`;
+    // const url = `https://visii-api-production.up.railway.app/api/login/videos/${select}`;
     handleRequest(url, response => {
       // console.log({ response });
       mainWindow.webContents.send("embeddedVideoList", response);
