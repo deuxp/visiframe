@@ -7,14 +7,13 @@
   border-radius: 5px;
   margin: auto;
   inset: 0;
-  height: 40%;
-  width: 30%;
+  height: max-content;
+  width: 50%;
   background-color: #fff;
   overflow-y: scroll;
-  color: var(--button-color);
-
-  left: 0;
-  right: auto;
+  color: #000;
+  /* left: 0; */
+  /* right: auto; */
 }
 
 .box input {
@@ -22,4 +21,50 @@
   border: none;
   border-bottom: solid 1px #000;
   margin-bottom: 1em;
+}
+
+.box input:focus {
+  border: none;
+}
+
+.box button {
+  margin-bottom: 1em;
+  margin-top: 2em;
+  cursor: pointer;
+}
+
+.forgot,
+.register,
+.email,
+.back {
+  color: blue;
+  cursor: pointer;
+}
+
+.forgot,
+.email {
+  font-size: 12px;
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+.email {
+  cursor: default;
+}
+
+.register {
+  padding-bottom: 1em;
+}
+
+.register:hover,
+.forgot:hover,
+.back:hover {
+  color: rgb(137, 137, 255);
+}
+
+.msg {
+  color: red;
+  font-style: italic;
+  margin: 0;
+  padding-bottom: 0.5em;
 }
