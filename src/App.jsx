@@ -3,6 +3,7 @@ import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
 import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
+import Login from "./components/Login/Login";
 
 function App() {
   const {
@@ -16,6 +17,8 @@ function App() {
     handleLoading,
     handleSetTerms,
     terms,
+    isLoggedIn,
+    setIsLoggedIn,
   } = useData();
 
   // useEffect(() => {
@@ -41,9 +44,10 @@ function App() {
 
   return (
     <div className="App">
-      {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
+      <Login setIsLoggedIn={setIsLoggedIn} />
+      {/* {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
       {embedList.length > 0 && terms && renderPlayers}
-      {menu === null && <Error reloadMenu={loadMenu} />}
+      {menu === null && <Error reloadMenu={loadMenu} />} */}
     </div>
   );
 }

@@ -6,6 +6,7 @@ function useData() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [terms, setTerms] = useState(window.localStorage.termcheck);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
 
@@ -89,6 +90,8 @@ function useData() {
     handleLoading,
     handleSetTerms,
     terms,
+    isLoggedIn,
+    setIsLoggedIn,
   };
 }
 
