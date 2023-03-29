@@ -21,10 +21,6 @@ function App() {
     setIsLoggedIn,
   } = useData();
 
-  // useEffect(() => {
-  //   console.log("embedslist", embedList);
-  // }, [embedList]);
-
   const renderPlayers = embedList.map((embed, index) => {
     return (
       currentIndex === index && (
@@ -44,10 +40,14 @@ function App() {
 
   return (
     <div className="App">
-      <Login setIsLoggedIn={setIsLoggedIn} />
-      {/* {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
-      {embedList.length > 0 && terms && renderPlayers}
-      {menu === null && <Error reloadMenu={loadMenu} />} */}
+      {!isLoggedIn && (
+        <Login setIsLoggedIn={setIsLoggedIn} loadmenu={loadMenu} />
+      )}
+      {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
+      {embedList.length > 0 && terms && isLoggedIn && renderPlayers}
+      {menu === null && (
+        <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} />
+      )}
     </div>
   );
 }
