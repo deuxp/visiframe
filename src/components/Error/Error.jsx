@@ -1,10 +1,16 @@
 import React from "react";
 import style from "./Error.module.css";
 
-function Error({ reloadMenu }) {
+function Error({ reloadMenu, setIsLoggedIn }) {
   const { message, container, back, message_title, page } = style;
   const handleClick = () => {
-    reloadMenu();
+    window.bridge.refreshAccess().then(res => {
+      if (res.refresh) {
+        reloadMenu();
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
   };
   return (
     <div className={page}>
