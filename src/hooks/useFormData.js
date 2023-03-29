@@ -70,7 +70,7 @@ function useFormData() {
   const register = (email, password, password_confirm, name) => {
     const credentials = { email, password, password_confirm, name };
     window.bridge.register(credentials, res => {
-      console.log("what is access: ", res);
+      // console.log("what is access: ", res);
       if (res.register) {
         clearFormData();
         setNeedToRegister(true); // show login view
