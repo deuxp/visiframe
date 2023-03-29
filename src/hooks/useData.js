@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
 function useData() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [terms, setTerms] = useState(window.localStorage.termcheck);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
 
@@ -16,16 +16,26 @@ function useData() {
   };
 
   // must test this with more lists
-  const handleSelection = uri => {
+  // const handleSelection = uri => {
+  //   window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
+  //     if (selection?.length > 0) {
+  //       try {
+  //         const newList = [...selection];
+  //         setEmbedList(prev => newList);
+  //         setCurrentIndex(0);
+  //       } catch (err) {
+  //         console.log("error with menu selection", err);
+  //       }
+  //     }
+  //   });
+  // };
+  const handleSelection = async uri => {
+    await accessPass();
     window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
       if (selection?.length > 0) {
-        try {
-          const newList = [...selection];
-          setEmbedList(prev => newList);
-          setCurrentIndex(0);
-        } catch (err) {
-          console.log("error with menu selection", err);
-        }
+        const newList = [...selection];
+        setEmbedList(prev => newList);
+        setCurrentIndex(0);
       }
     });
   };
@@ -60,8 +70,18 @@ function useData() {
     window.bridge.setWindowsize(size);
   };
 
-  const loadMenu = () => {
+  async function accessPass() {
+    const access = await window.bridge.verifyAccess();
+    if (access.access) return;
+    const refresh = await window.bridge.refreshAccess();
+    if (!refresh.refresh) {
+      setIsLoggedIn(false);
+    }
+  }
+
+  const loadMenu = async () => {
     window.bridge.getMenuItems("sendMenuItems", response => {
+      console.log("getting the menu :", response);
       handleInitialGet(response)
         .then(menu => {
           setAvailableWindowSize(WIDTH, HEIGHT);
@@ -69,14 +89,26 @@ function useData() {
         })
         .then(menu => {
           if (menu === null) return;
+          // auto select on success
           handleSelection(menu[1].uri); // -------- index corresponds to category of vids
+        })
+        .catch(err => {
+          console.log(err);
         });
     });
   };
 
+  // c
+
   // GETS initial data dump from ipcMain
   useEffect(() => {
-    loadMenu();
+    window.bridge.refreshAccess().then(res => {
+      if (res.refresh) {
+        loadMenu();
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
   }, []);
 
   return {
