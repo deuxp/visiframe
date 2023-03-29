@@ -2,7 +2,6 @@ const { app, BrowserWindow, ipcMain, net, session } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const axios = require("axios");
-const { get } = require("http");
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -11,8 +10,7 @@ if (require("electron-squirrel-startup")) {
 let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 800,
+    fullscreen: true,
     useContentSize: true,
     frame: false,
     webPreferences: {
@@ -25,13 +23,6 @@ const createWindow = () => {
     },
   });
 
-  // moved to listener..
-  // Denies access to clickable links that appear in the iframe
-  // mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-  //   return {
-  //     action: "deny",
-  //   };
-  // });
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
@@ -65,6 +56,7 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
 /////////////////////////
 // Security listeners //
 ///////////////////////
@@ -101,7 +93,8 @@ app.on("web-contents-created", (event, contents) => {
 // API URLS //
 /////////////
 
-const deployBase = "http://localhost:8080";
+const deployBase = "https://visii-api-production.up.railway.app";
+// const deployBase = "http://localhost:8080";
 
 const refresh = `${deployBase}/api/access/refresh`;
 const access = `${deployBase}/api/access`;
@@ -129,7 +122,6 @@ function setCookie(rawCookie) {
   const { name, value } = splitCookie(rawCookie);
   const cookie = {
     url: deployBase,
-    // url: "http://localhost:8080",
     name,
     value,
     httpOnly: true,
@@ -163,13 +155,6 @@ function validateSenderFrame(frame) {
   const file = path.parse(frame);
   return file.name === name && file.ext === ext;
 }
-
-// function validateSender(frame) {
-//   // Value the host of the URL using an actual URL parser and an allowlist
-//   if (new URL(frame.url).host === "https://visii-api-production.up.railway.app")
-//     return true;
-//   return false;
-// }
 
 function handleRequest(options, cb) {
   try {
@@ -374,7 +359,6 @@ ipcMain.handle("verifyAccess", async event => {
 /////////////////////////////
 // GET: inital menu items //
 ///////////////////////////
-let checklist; // conditional check for menu select
 ipcMain.handle("getMenuItems", () => {
   // const url = "http://localhost:8080/api/projects";
   const getOptions = {
@@ -389,8 +373,6 @@ ipcMain.handle("getMenuItems", () => {
         console.log("404");
         return mainWindow.webContents.send("sendMenuItems", "null");
       }
-      // const data = JSON.parse(response);
-      // checklist = data?.map(video => video.uri);
       mainWindow.webContents.send("sendMenuItems", response);
     });
   } catch (error) {
@@ -399,20 +381,17 @@ ipcMain.handle("getMenuItems", () => {
   }
 });
 
-///////////////////////////////////
+////////////////////////////////////////
 // GET: Selection of Embedded Videos //
-/////////////////////////////////
+//////////////////////////////////////
 
 ipcMain.handle("getEmbeds", (event, select) => {
-  // const url = `http://localhost:8080/api/projects/videos/${select}`;
-  // if (checklist.includes(select)) {
   const getOptions = {
     url: `${deployBase}/api/projects/videos/${select}`,
     method: "GET",
     credentials: "include",
     session: sesh,
   };
-  // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
   handleRequest(getOptions, response => {
     mainWindow.webContents.send("embeddedVideoList", response);
   });
@@ -428,8 +407,3 @@ ipcMain.handle("resizeWindow", (event, data) => {
   mainWindow.setSize(width, height);
   mainWindow.center();
 });
-
-// TODO:
-// when getting the intial list of vids, populate a list here that is
-// the checklist, for what is allowed to be passed
-// then make a conditional guard clause checking that one of the valid values are true
