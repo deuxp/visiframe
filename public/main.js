@@ -103,7 +103,8 @@ app.on("web-contents-created", (event, contents) => {
 
 const deployBase = "http://localhost:8080";
 
-const refresh = `${deployBase}/api/user/refresh`;
+const refresh = `${deployBase}/api/access/refresh`;
+const access = `${deployBase}/api/access`;
 const login = `${deployBase}/api/user/login`;
 const register = `${deployBase}/api/user/register`;
 const reset = `${deployBase}/api/reset`;
@@ -331,6 +332,45 @@ ipcMain.handle("postNewPassword", async (event, credentials) => {
   mainWindow.webContents.send("renderNewPassword", postPassword);
 });
 
+////////////// //////
+// REFRESH ACCESS //
+////////////// ////
+
+ipcMain.handle("refreshAccess", async event => {
+  const senderFrame = event.senderFrame.url;
+  if (!validateSenderFrame(senderFrame)) return;
+
+  const refreshOptions = {
+    url: refresh,
+    method: "GET",
+    credentials: "include",
+    session: sesh,
+  };
+  handleRequest(refreshOptions, response => {
+    console.log(response);
+    mainWindow.webContents.send("renderRefreshAccess", response);
+  });
+});
+
+////////////// //////
+// VERIFY ACCESS //
+////////////// ////
+
+ipcMain.handle("verifyAccess", async event => {
+  const senderFrame = event.senderFrame.url;
+  if (!validateSenderFrame(senderFrame)) return;
+  const getOptions = {
+    url: access,
+    method: "GET",
+    credentials: "include",
+    session: sesh,
+  };
+  handleRequest(getOptions, response => {
+    console.log(response);
+    mainWindow.webContents.send("renderAccess", response);
+  });
+});
+
 /////////////////////////////
 // GET: inital menu items //
 ///////////////////////////
@@ -347,15 +387,15 @@ ipcMain.handle("getMenuItems", () => {
     handleRequest(getOptions, response => {
       if (response.includes("<")) {
         console.log("404");
-        return mainWindow.webContents.send("sendMenuItems", "{ null }");
+        return mainWindow.webContents.send("sendMenuItems", "null");
       }
-      const data = JSON.parse(response);
-      checklist = data?.map(video => video.uri);
+      // const data = JSON.parse(response);
+      // checklist = data?.map(video => video.uri);
       mainWindow.webContents.send("sendMenuItems", response);
     });
   } catch (error) {
     console.log({ error: error.message });
-    mainWindow.webContents.send("sendMenuItems", "{ null }");
+    mainWindow.webContents.send("sendMenuItems", "null");
   }
 });
 
@@ -365,18 +405,18 @@ ipcMain.handle("getMenuItems", () => {
 
 ipcMain.handle("getEmbeds", (event, select) => {
   // const url = `http://localhost:8080/api/projects/videos/${select}`;
-  if (checklist.includes(select)) {
-    const getOptions = {
-      url: `${deployBase}/api/projects/videos/${select}`,
-      method: "GET",
-      credentials: "include",
-      session: sesh,
-    };
-    // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
-    handleRequest(getOptions, response => {
-      mainWindow.webContents.send("embeddedVideoList", response);
-    });
-  }
+  // if (checklist.includes(select)) {
+  const getOptions = {
+    url: `${deployBase}/api/projects/videos/${select}`,
+    method: "GET",
+    credentials: "include",
+    session: sesh,
+  };
+  // console.log({ senderFrame: event.senderFrame.url }); // >>>  { senderFrame: 'http://localhost:3000/' }
+  handleRequest(getOptions, response => {
+    mainWindow.webContents.send("embeddedVideoList", response);
+  });
+  // }
 });
 
 /////////////////////////////
