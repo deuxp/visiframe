@@ -2,7 +2,7 @@ import React from "react";
 import style from "./Login.module.css";
 import useFormData from "../../hooks/useFormData";
 
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, loadmenu }) {
   const {
     email,
     password,
@@ -26,6 +26,9 @@ function Login({ setIsLoggedIn }) {
     submitForm(e)
       .then(() => {
         setIsLoggedIn(true);
+      })
+      .then(() => {
+        loadmenu();
       })
       .catch(() => {
         console.log("401");
