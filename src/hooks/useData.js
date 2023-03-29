@@ -4,8 +4,7 @@ function useData() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [terms, setTerms] = useState(window.localStorage.termcheck);
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
@@ -15,20 +14,6 @@ function useData() {
     setTerms(arg);
   };
 
-  // must test this with more lists
-  // const handleSelection = uri => {
-  //   window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
-  //     if (selection?.length > 0) {
-  //       try {
-  //         const newList = [...selection];
-  //         setEmbedList(prev => newList);
-  //         setCurrentIndex(0);
-  //       } catch (err) {
-  //         console.log("error with menu selection", err);
-  //       }
-  //     }
-  //   });
-  // };
   const handleSelection = async uri => {
     await accessPass();
     window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
@@ -36,18 +21,6 @@ function useData() {
         const newList = [...selection];
         setEmbedList(prev => newList);
         setCurrentIndex(0);
-      }
-    });
-  };
-
-  const handleLoading = bool => {
-    return new Promise((resolve, reject) => {
-      try {
-        setIsLoading(bool);
-        resolve(true);
-      } catch (error) {
-        console.log(error);
-        reject(false);
       }
     });
   };
@@ -81,7 +54,6 @@ function useData() {
 
   const loadMenu = async () => {
     window.bridge.getMenuItems("sendMenuItems", response => {
-      console.log("getting the menu :", response);
       handleInitialGet(response)
         .then(menu => {
           setAvailableWindowSize(WIDTH, HEIGHT);
@@ -105,6 +77,7 @@ function useData() {
     window.bridge.refreshAccess().then(res => {
       if (res.refresh) {
         loadMenu();
+        setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
       }
@@ -118,8 +91,6 @@ function useData() {
     setCurrentIndex,
     handleSelection,
     loadMenu,
-    isLoading,
-    handleLoading,
     handleSetTerms,
     terms,
     isLoggedIn,
