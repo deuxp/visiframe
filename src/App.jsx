@@ -1,6 +1,6 @@
 import "./App.css";
 import VideoPlayer from "./components/VIdeoPlayer/VideoPlayer";
-import Error from "./components/Error/Error";
+// import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
 import Login from "./components/Login/Login";
@@ -13,8 +13,6 @@ function App() {
     setCurrentIndex,
     handleSelection,
     loadMenu,
-    isLoading,
-    handleLoading,
     handleSetTerms,
     terms,
     isLoggedIn,
@@ -31,8 +29,6 @@ function App() {
           embedList={embedList}
           setCurrentIndex={setCurrentIndex}
           currentIndex={currentIndex}
-          isLoading={isLoading}
-          handleLoading={handleLoading}
         />
       )
     );
@@ -45,9 +41,9 @@ function App() {
       )}
       {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
       {embedList.length > 0 && terms && isLoggedIn && renderPlayers}
-      {menu === null && (
+      {/* {menu === null && (
         <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} />
-      )}
+      )} */}
     </div>
   );
 }

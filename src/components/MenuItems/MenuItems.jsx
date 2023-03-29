@@ -1,12 +1,12 @@
-import React from "react";
+import { useMemo } from "react";
 
 function MenuItems({ name, uri, handleSelection, dropup__content__link }) {
-  const handleClick = uri => {
-    handleSelection(uri);
-  };
   return (
     <>
-      <div className={dropup__content__link} onClick={() => handleClick(uri)}>
+      <div
+        className={dropup__content__link}
+        onClick={() => handleSelection(uri)}
+      >
         {name}
       </div>
     </>
