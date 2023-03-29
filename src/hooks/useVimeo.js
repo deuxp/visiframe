@@ -21,43 +21,51 @@ function useVimeo(embedList, currentIndex, setCurrentIndex, handleLoading) {
     // });
     player.current.on("play", playData => {
       console.log("playing");
-      handleLoading(false);
+      // handleLoading(false);
     });
 
     player.current.on("error", error => {
       console.log("player error: ", error.message);
     });
 
-    player.current.on("bufferstart", () => {
-      handleLoading(true).then(() => {
-        console.log("buffering ...");
-      });
-    });
-    player.current.on("bufferend", () => {
-      handleLoading(false).then(() => {
-        console.log("end of buffering.");
-      });
-    });
+    // player.current.on("bufferstart", () => {
+    //   // handleLoading(true);
+    //   console.log("buffering ...");
+    // });
+    // player.current.on("bufferend", () => {
+    //   // handleLoading(false);
+    //   console.log("end of buffering.");
+    // });
     // player.current.on("loaded", () => {
     //   handleLoading(false).then(() => {
     //     console.log("...loaded");
     //   });
     // });
 
+    player.current.on("timeupdate", data => {
+      if (data.percent >= 0.95) {
+        console.log("timeup: ", data);
+        let newIndex = getRandomInt(embedList.length);
+        if (newIndex === currentIndex) {
+          newIndex = (currentIndex + 1) % embedList.length;
+        }
+        player.current.destroy();
+        setCurrentIndex(newIndex);
+      }
+    });
+
     player.current.on("ended", data => {
       console.log("ended: ", data);
-      player.current.destroy();
       let newIndex = getRandomInt(embedList.length);
       if (newIndex === currentIndex) {
         newIndex = (currentIndex + 1) % embedList.length;
       }
-      handleLoading(true).then(() => {
-        setCurrentIndex(newIndex);
-      });
+      player.current.destroy();
+      setCurrentIndex(newIndex);
     });
-  }, []);
-  // }, [currentIndex, handleLoading]);
-  // }, [currentIndex, setCurrentIndex, embedList.length, handleLoading]);
+    // }, []);
+    // }, [currentIndex, handleLoading]);
+  }, [currentIndex]);
 
   const handlePause = () => {
     if (!player.current) return;
