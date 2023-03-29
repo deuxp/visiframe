@@ -32,6 +32,7 @@ const indexBridge = {
       });
     }
   },
+
   setWindowsize: size => {
     ipcRenderer.invoke("resizeWindow", size);
   },
@@ -73,6 +74,30 @@ const indexBridge = {
       console.log(data);
       callback(data);
       listener.removeAllListeners("renderNewPassword");
+    });
+  },
+  refreshAccess: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.invoke("refreshAccess");
+      const listener = ipcRenderer.on("renderRefreshAccess", (event, res) => {
+        const data = JSON.parse(res);
+        console.log(data);
+        // { refresh: true }
+        listener.removeAllListeners("renderRefreshAccess");
+        resolve(data);
+      });
+    });
+  },
+  verifyAccess: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.invoke("verifyAccess");
+      const listener = ipcRenderer.on("renderAccess", (event, res) => {
+        const data = JSON.parse(res);
+        console.log(data);
+        // { access: true }
+        listener.removeAllListeners("renderAccess");
+        resolve(data);
+      });
     });
   },
 };
