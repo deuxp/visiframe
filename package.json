@@ -5,11 +5,10 @@
   "private": true,
   "main": "./public/main.js",
   "homepage": "./",
-  "build": {
-    "asar": true,
-    "appId": "com.utopics.visualizer"
+  "build": {},
+  "config": {
+    "forge": "./forge.config.js"
   },
-  "config": {"forge": "./forge.config.js"},
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
