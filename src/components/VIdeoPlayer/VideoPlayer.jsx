@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import ControlsGroup from "../ControlsGroup/ControlsGroup";
-// import useVimeo from "../../hooks/useVimeo";
 import Player from "@vimeo/player";
 
 function VideoPlayer({
@@ -76,6 +75,7 @@ function VideoPlayer({
     });
 
     player.current.play();
+    // return () => player.current.destroy();
   }, [currentIndex, setCurrentIndex, embedList, uri]);
 
   const handlePause = () => {
@@ -94,12 +94,18 @@ function VideoPlayer({
     }
     setCurrentIndex(newIndex);
   };
+
+  const destroyList = uri => {
+    handleSelection(uri);
+    player.current.destroy();
+  };
+
   return (
     <>
       <div>
         <ControlsGroup
           menu={menu}
-          handleSelection={handleSelection}
+          handleSelection={destroyList}
           handleNext={handleNext}
           handlePause={handlePause}
           handlePlay={handlePlay}

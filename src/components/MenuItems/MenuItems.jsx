@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 function MenuItems({ name, uri, handleSelection, dropup__content__link }) {
   return (
     <>
