@@ -1,9 +1,15 @@
 {
   "name": "utopics-visualizer",
+  "productName": "utopics-visualizer",
   "version": "0.1.0",
   "private": true,
   "main": "./public/main.js",
   "homepage": "./",
+  "build": {
+    "asar": true,
+    "appId": "com.utopics.visualizer"
+  },
+  "config": {"forge": "./forge.config.js"},
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
