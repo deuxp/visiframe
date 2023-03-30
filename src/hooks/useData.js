@@ -18,7 +18,10 @@ function useData() {
     await accessPass();
     window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
       if (selection?.length > 0) {
+        console.log("-----------------", uri);
         const newList = [...selection];
+
+        console.log("-----new list----", newList);
         setEmbedList(prev => newList);
         setCurrentIndex(0);
       }

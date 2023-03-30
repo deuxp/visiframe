@@ -17,10 +17,3 @@ function Dropup({ menu, handleSelection }) {
 }
 
 export default Dropup;
-
-/**
- * this is the dropup and it has 3 elements:
- * 1. dropup
- * 2. dropup button
- * 3. dropup content -> which is menu, so
- */
