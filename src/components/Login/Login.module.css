@@ -12,6 +12,8 @@
   background-color: #fff;
   overflow-y: scroll;
   color: #000;
+  opacity: 0.001;
+  animation: fadeIn 2000ms ease-in 1000ms normal forwards;
   /* left: 0; */
   /* right: auto; */
 }
@@ -67,4 +69,14 @@
   font-style: italic;
   margin: 0;
   padding-bottom: 0.5em;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.001;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
