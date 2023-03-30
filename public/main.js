@@ -13,6 +13,7 @@ const createWindow = () => {
     fullscreen: true,
     useContentSize: true,
     frame: false,
+    backgroundColor: "#000",
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
@@ -93,8 +94,7 @@ app.on("web-contents-created", (event, contents) => {
 // API URLS //
 /////////////
 
-const deployBase = "https://visii-api-production.up.railway.app";
-// const deployBase = "http://localhost:8080";
+const deployBase = "https://visualizer-server-production.up.railway.app";
 
 const refresh = `${deployBase}/api/access/refresh`;
 const access = `${deployBase}/api/access`;
