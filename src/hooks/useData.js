@@ -63,7 +63,7 @@ function useData() {
           return menu;
         })
         .then(menu => {
-          if (menu === null) return;
+          if (menu === null) return setMenu(null);
           // auto select on success
           handleSelection(menu[1].uri); // -------- index corresponds to category of vids
         })
@@ -78,6 +78,9 @@ function useData() {
   // GETS initial data dump from ipcMain
   useEffect(() => {
     window.bridge.refreshAccess().then(res => {
+      if (!res) {
+        return setMenu(null);
+      }
       if (res.refresh) {
         loadMenu();
         setIsLoggedIn(true);
