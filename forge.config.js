@@ -20,7 +20,12 @@ module.exports = {
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+      config: {
+        author: "Gottfried Kleinberger",
+        exe: "utopics-visualizer.exe",
+        name: "utopics-visualizer",
+        description: "Utopics visualizer. Stream visual efx from Utopics.",
+      },
     },
     {
       name: "@electron-forge/maker-zip",
@@ -28,7 +33,13 @@ module.exports = {
     },
     {
       name: "@electron-forge/maker-deb",
-      config: {},
+      config: {
+        icon: "src/icons/png/32x32.png",
+        executableName: "utopics-visualizer",
+        name: "utopics-visualizer",
+        description: "Utopics visualizer. Stream visual efx from Utopics.",
+        licence: "MIT",
+      },
     },
     {
       name: "@electron-forge/maker-rpm",
