@@ -10,7 +10,6 @@ if (require("electron-squirrel-startup")) {
 let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    fullscreen: true,
     useContentSize: true,
     frame: false,
     backgroundColor: "#000",
