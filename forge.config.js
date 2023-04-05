@@ -21,10 +21,12 @@ module.exports = {
     {
       name: "@electron-forge/maker-squirrel",
       config: {
-        author: "Gottfried Kleinberger",
-        exe: "utopics-visualizer.exe",
+        authors: "Gottfried Kleinberger",
+        setupExe: "utopics-visualizer.exe",
+        setupIcon: "src/icons/win/icon.ico",
         name: "utopics-visualizer",
         description: "Utopics visualizer. Stream visual efx from Utopics.",
+        noMsi: true,
       },
     },
     {
