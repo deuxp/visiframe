@@ -11,6 +11,7 @@ let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     useContentSize: true,
+    title: "Utopics Visualizer",
     frame: false,
     backgroundColor: "#000",
     webPreferences: {
