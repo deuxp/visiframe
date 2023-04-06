@@ -12,6 +12,9 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     useContentSize: true,
     title: "Utopics Visualizer",
+    icon: "src/icons/win/icon.ico", // windows
+    // icon: "src/icons/png/32x32.png", // linux
+    // icon: "src/icons/mac/icon.icns", // darwin
     frame: false,
     backgroundColor: "#000",
     webPreferences: {
