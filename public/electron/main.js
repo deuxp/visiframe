@@ -2,6 +2,17 @@ const { app, BrowserWindow, ipcMain, net, session } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const axios = require("axios");
+const {
+  deployBase,
+  refresh,
+  access,
+  login,
+  register,
+  reset,
+  newPassword,
+} = require("./api-urls");
+
+const { setCookie } = require("./cookies");
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -93,56 +104,56 @@ app.on("web-contents-created", (event, contents) => {
   });
 });
 
-///////////////
-// API URLS //
-/////////////
+// ///////////////
+// // API URLS //
+// /////////////
 
-const deployBase = "https://visualizer-server-production.up.railway.app";
-// const deployBase = "http://localhost:8080";
+// const deployBase = "https://visualizer-server-production.up.railway.app";
+// // const deployBase = "http://localhost:8080";
 
-const refresh = `${deployBase}/api/access/refresh`;
-const access = `${deployBase}/api/access`;
-const login = `${deployBase}/api/user/login`;
-const register = `${deployBase}/api/user/register`;
-const reset = `${deployBase}/api/reset`;
-const newPassword = `${deployBase}/api/reset/new-password`;
+// const refresh = `${deployBase}/api/access/refresh`;
+// const access = `${deployBase}/api/access`;
+// const login = `${deployBase}/api/user/login`;
+// const register = `${deployBase}/api/user/register`;
+// const reset = `${deployBase}/api/reset`;
+// const newPassword = `${deployBase}/api/reset/new-password`;
 
-//////////////////////
-// Session-cookies //
-////////////////////
+// //////////////////////
+// // Session-cookies //
+// ////////////////////
 
-function splitCookie(string) {
-  let partition = string.indexOf("=");
-  let end = string.indexOf(";");
-  let name = string.slice(0, partition);
-  let value = string.slice(partition + 1, end);
+// function splitCookie(string) {
+//   let partition = string.indexOf("=");
+//   let end = string.indexOf(";");
+//   let name = string.slice(0, partition);
+//   let value = string.slice(partition + 1, end);
 
-  return { name, value };
-}
+//   return { name, value };
+// }
 
-// Set a cookie with the given cookie data;
-// may overwrite equivalent cookies if they exist.
-function setCookie(rawCookie) {
-  const { name, value } = splitCookie(rawCookie);
-  const cookie = {
-    url: deployBase,
-    name,
-    value,
-    httpOnly: true,
-    path: "/",
-    secure: true,
-    sameSite: "strict",
-    expirationDate: 1742054595000,
-  };
-  sesh.cookies.set(cookie).then(
-    () => {
-      console.log(`\n${name} cookie is set\n`);
-    },
-    error => {
-      console.error(error);
-    }
-  );
-}
+// // Set a cookie with the given cookie data;
+// // may overwrite equivalent cookies if they exist.
+// function setCookie(rawCookie) {
+//   const { name, value } = splitCookie(rawCookie);
+//   const cookie = {
+//     url: deployBase,
+//     name,
+//     value,
+//     httpOnly: true,
+//     path: "/",
+//     secure: true,
+//     sameSite: "strict",
+//     expirationDate: 1742054595000,
+//   };
+//   sesh.cookies.set(cookie).then(
+//     () => {
+//       console.log(`\n${name} cookie is set\n`);
+//     },
+//     error => {
+//       console.error(error);
+//     }
+//   );
+// }
 
 //////////////
 // HELPERS //
@@ -196,8 +207,8 @@ async function postLoginCredentials(url, credentials) {
     );
     // array of 2 raw cookie dough
     const cookies = res.headers["set-cookie"];
-    setCookie(cookies[0]);
-    setCookie(cookies[1]);
+    setCookie(sesh, deployBase, cookies[0]);
+    setCookie(sesh, deployBase, cookies[1]);
 
     console.log(res.data);
     const data = JSON.stringify(res.data);
@@ -216,7 +227,6 @@ async function registerNewUser(url, credentials) {
         email: credentials?.email,
         password: credentials?.password,
         password_confirm: credentials?.password_confirm,
-        name: credentials?.name,
       },
       { withCredentials: true }
     );
@@ -250,7 +260,6 @@ async function resetPassword(url, email) {
 
 async function postNewPassword(url, credentials) {
   const { email, password, password_confirm } = credentials;
-  // console.log(credentials);
   try {
     const res = await axios.post(
       url,
