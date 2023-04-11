@@ -5,9 +5,10 @@ function useFormData() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
 
   // Form State
+
   const [needToRegister, setNeedToRegister] = useState(true);
   const [newPassword, setNewPassword] = useState(false);
   const [reset, setReset] = useState(false);
@@ -19,7 +20,7 @@ function useFormData() {
 
   const clearFormData = () => {
     setEmail("");
-    setName("");
+    // setName("");
     setConfirm("");
     setPassword("");
     clearMsgs();
@@ -67,8 +68,10 @@ function useFormData() {
     });
   }
 
-  const register = (email, password, password_confirm, name) => {
-    const credentials = { email, password, password_confirm, name };
+  const register = (email, password, password_confirm) => {
+    // const register = (email, password, password_confirm, name) => {
+    // const credentials = { email, password, password_confirm, name };
+    const credentials = { email, password, password_confirm };
     window.bridge.register(credentials, res => {
       // console.log("what is access: ", res);
       if (res.register) {
@@ -127,7 +130,8 @@ function useFormData() {
       if (needToRegister && !reset && (!email || !password))
         return setMessage("*Please fill required fields");
       // Register: if "!needToRegister"
-      if (!needToRegister && (!name || !email || !password))
+      if (!needToRegister && (!email || !password))
+        // if (!needToRegister && (!name || !email || !password))
         return setMessage("*Please fill required fields");
       if (!validEmail(email)) return setMessage("Not a valid email address");
 
@@ -143,7 +147,8 @@ function useFormData() {
             reject(err);
           });
       }
-      if (!needToRegister) return register(email, password, confirm, name);
+      if (!needToRegister) return register(email, password, confirm);
+      // if (!needToRegister) return register(email, password, confirm, name);
     });
   };
 
@@ -151,7 +156,7 @@ function useFormData() {
     email,
     password,
     confirm,
-    name,
+    // name,
     needToRegister,
     newPassword,
     reset,
@@ -159,7 +164,7 @@ function useFormData() {
     setEmail,
     setPassword,
     setConfirm,
-    setName,
+    // setName,
     backToLogin,
     handleRegisterToggle,
     handleResetView,

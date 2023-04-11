@@ -7,7 +7,7 @@ function Login({ setIsLoggedIn, loadmenu }) {
     email,
     password,
     confirm,
-    name,
+    // name,
     needToRegister,
     newPassword,
     reset,
@@ -15,7 +15,7 @@ function Login({ setIsLoggedIn, loadmenu }) {
     setEmail,
     setPassword,
     setConfirm,
-    setName,
+    // setName,
     backToLogin,
     handleRegisterToggle,
     handleResetView,
@@ -49,14 +49,14 @@ function Login({ setIsLoggedIn, loadmenu }) {
             {needToRegister ? "register" : "login"}
           </div>
         )}
-        {!needToRegister && !newPassword && !reset && (
+        {/* {!needToRegister && !newPassword && !reset && (
           <input
             onChange={e => setName(e.target.value)}
             value={name}
             type="text"
             placeholder="Name"
           />
-        )}
+        )} */}
         {!newPassword && (
           <input
             onChange={e => setEmail(e.target.value)}
