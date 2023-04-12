@@ -2,8 +2,8 @@
 // API URLS //
 /////////////
 
-// const deployBase = "https://visualizer-server-production.up.railway.app";
-const deployBase = "http://localhost:8080";
+const deployBase = "https://visualizer-server-production.up.railway.app";
+// const deployBase = "http://localhost:8080";
 
 const refresh = `${deployBase}/api/access/refresh`;
 const access = `${deployBase}/api/access`;
