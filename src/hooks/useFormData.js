@@ -1,15 +1,15 @@
 import { useState } from "react";
 
 function useFormData() {
+  const firstLogin = "firstLogin";
   // Form Data
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  // const [name, setName] = useState("");
-
   // Form State
-
-  const [needToRegister, setNeedToRegister] = useState(true);
+  const [needToRegister, setNeedToRegister] = useState(
+    window.localStorage.getItem(firstLogin)
+  );
   const [newPassword, setNewPassword] = useState(false);
   const [reset, setReset] = useState(false);
   const [message, setMessage] = useState("");
@@ -20,7 +20,6 @@ function useFormData() {
 
   const clearFormData = () => {
     setEmail("");
-    // setName("");
     setConfirm("");
     setPassword("");
     clearMsgs();
@@ -31,13 +30,6 @@ function useFormData() {
     setNewPassword(false);
     clearFormData();
     clearMsgs();
-  };
-
-  const handleRegisterToggle = () => {
-    setNeedToRegister(prev => !prev);
-    setReset(false);
-    clearMsgs();
-    clearFormData();
   };
 
   const handleResetView = () => {
@@ -56,11 +48,12 @@ function useFormData() {
       window.bridge.login(credentials, res => {
         clearFormData();
         if (res.login) {
-          // setIsLoggedIn(true);
           clearMsgs();
           resolve(res.login);
         }
         if (!res.login) {
+          window.localStorage.setItem(firstLogin, "true");
+          setNeedToRegister(true);
           setMessage("Failed to login, please try again");
           reject(res.login);
         }
@@ -69,25 +62,28 @@ function useFormData() {
   }
 
   const register = (email, password, password_confirm) => {
-    // const register = (email, password, password_confirm, name) => {
-    // const credentials = { email, password, password_confirm, name };
-    const credentials = { email, password, password_confirm };
-    window.bridge.register(credentials, res => {
-      // console.log("what is access: ", res);
-      if (res.register) {
-        clearFormData();
-        setNeedToRegister(true); // show login view
-        setMessage("Please re-enter your login information");
-      }
-      if (!res.register) {
-        console.log("user not registered try again later");
-        clearFormData();
-        setMessage("Failed to register new user, please try again");
-      }
+    return new Promise((resolve, reject) => {
+      const credentials = { email, password, password_confirm };
+      window.bridge.register(credentials, async res => {
+        if (res.register) {
+          window.localStorage.setItem(firstLogin, "true");
+          const creds = await login(email, password);
+          if (!creds) reject(creds);
+          resolve(res.register);
+        }
+        if (!res.register) {
+          clearFormData();
+          setMessage("Use your Utopics credentials. Are you subscribed?");
+          reject(res.register);
+        }
+      });
     });
   };
 
   const resetPassword = email => {
+    if (!window.localStorage.getItem(firstLogin)) {
+      setMessage("Please enter your new password");
+    }
     window.bridge.resetPassword(email, res => {
       if (!res.reset) {
         setMessage("User not found, please re-enter email");
@@ -105,7 +101,7 @@ function useFormData() {
     const credentials = { email, password, password_confirm };
     window.bridge.postNewPassword(credentials, res => {
       if (!res.update) {
-        return setMessage("Please check your email");
+        return setMessage("Please check your email/spam folder");
       }
       // this is where you clear everything and login
       if (res.update) {
@@ -146,8 +142,18 @@ function useFormData() {
           .catch(err => {
             reject(err);
           });
+        return;
       }
-      if (!needToRegister) return register(email, password, confirm);
+      if (!needToRegister) {
+        register(email, password, confirm)
+          .then(success => {
+            resolve(success);
+          })
+          .catch(err => {
+            reject(err);
+          });
+        return;
+      }
       // if (!needToRegister) return register(email, password, confirm, name);
     });
   };
@@ -156,7 +162,6 @@ function useFormData() {
     email,
     password,
     confirm,
-    // name,
     needToRegister,
     newPassword,
     reset,
@@ -164,9 +169,7 @@ function useFormData() {
     setEmail,
     setPassword,
     setConfirm,
-    // setName,
     backToLogin,
-    handleRegisterToggle,
     handleResetView,
     submitForm,
   };

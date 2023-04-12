@@ -7,7 +7,6 @@ function Login({ setIsLoggedIn, loadmenu }) {
     email,
     password,
     confirm,
-    // name,
     needToRegister,
     newPassword,
     reset,
@@ -15,9 +14,7 @@ function Login({ setIsLoggedIn, loadmenu }) {
     setEmail,
     setPassword,
     setConfirm,
-    // setName,
     backToLogin,
-    handleRegisterToggle,
     handleResetView,
     submitForm,
   } = useFormData();
@@ -38,25 +35,12 @@ function Login({ setIsLoggedIn, loadmenu }) {
   return (
     <>
       <div className={style.box}>
-        <h1>{needToRegister ? "User Login" : "Register New User"}</h1>
+        <h1>{needToRegister ? "User Login" : "Utopics Login"}</h1>
         {(reset || newPassword) && (
           <div onClick={backToLogin} className={style.register}>
             Back to Login
           </div>
         )}
-        {!reset && !newPassword && (
-          <div onClick={handleRegisterToggle} className={style.register}>
-            {needToRegister ? "register" : "login"}
-          </div>
-        )}
-        {/* {!needToRegister && !newPassword && !reset && (
-          <input
-            onChange={e => setName(e.target.value)}
-            value={name}
-            type="text"
-            placeholder="Name"
-          />
-        )} */}
         {!newPassword && (
           <input
             onChange={e => setEmail(e.target.value)}
@@ -89,7 +73,8 @@ function Login({ setIsLoggedIn, loadmenu }) {
         {reset && <div className={style.email}>Enter your email to reset</div>}
         {newPassword && (
           <div className={style.email}>
-            Check your Email<br></br> Then enter new Password
+            We sent you an email, click the link<br></br> Then you may enter
+            your new password here
           </div>
         )}
         <button onClick={handleOnSubmit}>submit</button>
