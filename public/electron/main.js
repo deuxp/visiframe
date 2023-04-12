@@ -26,7 +26,7 @@ const createWindow = () => {
     icon: "src/icons/win/icon.ico", // windows
     // icon: "src/icons/png/512x512.png", // linux
     // icon: "src/icons/mac/icon.icns", // darwin
-    frame: false,
+    frame: true,
     backgroundColor: "#000",
     webPreferences: {
       contextIsolation: true,
