@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 
 function useData() {
+  const termCheck = "termcheck";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menu, setMenu] = useState([]);
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [terms, setTerms] = useState(window.localStorage.termcheck);
+  const [terms, setTerms] = useState(window.localStorage.getItem(termCheck));
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
 
   const handleSetTerms = arg => {
-    window.localStorage.termcheck = "true";
+    window.localStorage.setItem(termCheck, "true");
     setTerms(arg);
   };
 
