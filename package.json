@@ -3,7 +3,7 @@
   "productName": "utopics-visualizer",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron/main.js",
+  "main": "main/electron/main.js",
   "homepage": "./",
   "build": {},
   "config": {
