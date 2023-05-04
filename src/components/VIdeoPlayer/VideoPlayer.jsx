@@ -53,7 +53,6 @@ const VideoPlayer = memo(
 
       player.current.on("timeupdate", data => {
         if (data.percent >= 0.95) {
-          // console.log("timeup: ", data);
           let newIndex = getRandomInt(embedList.length);
           if (newIndex === currentIndex) {
             newIndex = (currentIndex + 1) % embedList.length;
