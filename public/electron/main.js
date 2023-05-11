@@ -3,6 +3,7 @@ const path = require("path");
 const isDev = require("electron-is-dev");
 const axios = require("axios");
 const { deployBase, refresh, access, login } = require("./api-urls");
+const { getNetworks, connectWifi } = require("../../src/services/wifi");
 
 const { setCookie } = require("./cookies");
 
@@ -253,4 +254,35 @@ ipcMain.handle("resizeWindow", (event, data) => {
   const { width, height } = JSON.parse(data);
   mainWindow.setSize(width, height);
   mainWindow.center();
+});
+
+/////////////////////////
+// GET: WIFI-NETWORKS //
+///////////////////////
+
+/**
+ * all handles return obj: { data: Object, message: String }
+ */
+ipcMain.handle("get/networks", async () => {
+  try {
+    return await getNetworks();
+  } catch (error) {
+    return error;
+  }
+});
+
+///////////////////////
+// CONNECT: TO WIFI //
+/////////////////////
+
+ipcMain.handle("connect/wifi", async (event, { ssid, password }) => {
+  return await connectWifi(ssid, password);
+});
+
+//////////////////
+// RELOAD PAGE //
+////////////////
+
+ipcMain.handle("reload", () => {
+  mainWindow.reload();
 });
