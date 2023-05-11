@@ -6,7 +6,7 @@ import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
 import Login from "./components/Login/Login";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function App() {
   const {
@@ -39,11 +39,6 @@ function App() {
       }, ms);
     });
   }
-
-  // useEffect(() => {
-  //   const timerID = renderError(2000);
-  //   return () => clearTimeout(timerID);
-  // }, [serverError]);
 
   // Wifi connection listeners
   window.addEventListener("online", () => {
