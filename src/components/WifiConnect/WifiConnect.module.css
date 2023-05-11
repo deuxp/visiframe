@@ -1,0 +1,67 @@
+.container {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  max-width: 300px;
+}
+
+#reload {
+  transform: translateY(4px);
+}
+
+.select {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  height: 24px;
+  width: 100%;
+}
+
+.password {
+  font-size: 1rem;
+  height: 24px;
+  width: calc(100% - 5px);
+  margin-bottom: 1rem;
+}
+
+.button_container {
+  align-self: flex-start;
+}
+
+.button {
+  border: none;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  margin-right: 1rem;
+  height: 100%;
+  background-color: #0f9688;
+  color: #fff;
+  box-shadow: 0 7px 15px #000;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+.button:hover {
+  background-color: coral;
+}
+
+.button:active {
+  box-shadow: 0 4px 5px #000;
+  background-color: rgb(185, 109, 83);
+  transform: translateY(3px);
+}
+
+.title {
+  font-size: 2rem;
+  color: #0ac326;
+  padding: 1rem;
+}
+
+.message {
+  position: absolute;
+  bottom: 2rem;
+  color: #ff9500;
+}

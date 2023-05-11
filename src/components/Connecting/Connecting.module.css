@@ -1,0 +1,37 @@
+.container {
+  position: absolute;
+  width: 100%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  top: 15%;
+  height: 100%;
+  animation: flashing 2000ms linear infinite;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 3rem;
+  z-index: 1;
+}
+
+@keyframes flashing {
+  0% {
+    color: #dd1e1e;
+  }
+
+  25% {
+    color: #16af1e;
+  }
+
+  50% {
+    color: #1b3098;
+  }
+
+  75% {
+    color: #cdf636;
+  }
+
+  100% {
+    color: #03ffff;
+  }
+}
