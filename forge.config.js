@@ -37,6 +37,7 @@ module.exports = {
       name: "@electron-forge/maker-deb",
       config: {
         icon: "src/icons/png/32x32.png",
+        maintainer: "Gottfried Kleinberger",
         executableName: "utopics-visualizer",
         name: "utopics-visualizer",
         description: "Utopics visualizer. Stream visual efx from Utopics.",

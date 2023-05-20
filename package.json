@@ -34,18 +34,11 @@
     "make": "react-scripts build && electron-forge make"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      "last 1 electron version"
-    ],
-    "development": [
-      "last 1 electron version"
-    ]
+    "production": ["last 1 electron version"],
+    "development": ["last 1 electron version"]
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
@@ -57,7 +50,6 @@
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "electron": "^22.0.2",
-    "electron-icon-maker": "^0.0.5",
     "wait-on": "^7.0.1"
   }
 }
