@@ -1,7 +1,8 @@
 const wifi = require("node-wifi");
+wifi.init({ iface: null });
 
 function sleep(ms) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
     }, ms);
@@ -9,7 +10,6 @@ function sleep(ms) {
 }
 
 async function getNetworks() {
-  wifi.init({ iface: null });
   await sleep(1000);
   try {
     let res = await wifi.scan();
@@ -18,6 +18,9 @@ async function getNetworks() {
       await sleep(1000);
       console.log("loop");
       res = await wifi.scan();
+    }
+    if (res?.length === 0) {
+      return { data: res, message: "Error: enable wifi module" };
     }
     return { data: res, message: "node-wifi.scan" };
   } catch (error) {
