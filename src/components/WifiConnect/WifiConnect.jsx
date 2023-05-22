@@ -29,7 +29,7 @@ function WifiConnect({ setIsConnecting, isConnected, setIsConnected }) {
   }
 
   function handleReload() {
-    window.api.reload();
+    window.bridge.reload();
   }
 
   return (
@@ -44,7 +44,7 @@ function WifiConnect({ setIsConnecting, isConnected, setIsConnected }) {
       </select>
       <input
         className={style.password}
-        onChange={e => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
         value={password}
         type="password"
         placeholder="password"
