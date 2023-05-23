@@ -4,6 +4,7 @@ import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
 import Login from "./components/Login/Login";
+import { useEffect, useState } from "react";
 
 function App() {
   const {
@@ -19,7 +20,7 @@ function App() {
     setIsLoggedIn,
   } = useData();
 
-  const renderPlayers = embedList.map((embed, index) => {
+  const renderPlayers = embedList.map((_embed, index) => {
     return (
       currentIndex === index && (
         <VideoPlayer
@@ -34,16 +35,32 @@ function App() {
     );
   });
 
+  window.addEventListener("online", () => {
+    setNet(navigator.onLine);
+    // window.bridge.kioskMode(navigator.onLine);
+  });
+
+  window.addEventListener("offline", () => {
+    setNet(navigator.onLine);
+    // window.bridge.kioskMode(navigator.onLine);
+  });
+
+  const [net, setNet] = useState(navigator.onLine);
+
   return (
     <div className="App">
-      {!isLoggedIn && menu !== null && (
-        <Login setIsLoggedIn={setIsLoggedIn} loadmenu={loadMenu} />
-      )}
-      {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
-      {embedList.length > 0 && terms && isLoggedIn && renderPlayers}
-      {menu === null && (
-        <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} />
-      )}
+      {/* {!isLoggedIn && menu !== null && ( */}
+      {/*   <Login setIsLoggedIn={setIsLoggedIn} loadmenu={loadMenu} /> */}
+      {/* )} */}
+      {/* {!terms && <TermsOfService handleSetTerms={handleSetTerms} />} */}
+      {/* {embedList.length > 0 && terms && isLoggedIn && renderPlayers} */}
+      {/* {menu === null && ( */}
+      {/*   <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} /> */}
+      {/* )} */}
+
+      {net && <h1 style={{ color: "white" }}>Videos!</h1>}
+
+      {!net && <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} />}
     </div>
   );
 }
