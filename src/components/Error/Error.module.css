@@ -13,37 +13,32 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: red 5px solid;
-  background-color: rgb(255, 145, 145);
+  background-color: white;
   color: aliceblue;
   width: max-content;
   position: relative;
-  padding: 1.5em;
-  border-radius: 5px;
+  padding: 2em;
   z-index: 3;
 }
 
-.back {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.back:hover svg path {
-  stroke: #ffffff;
-}
-
-.button {
-  padding: 1em;
-}
-
-.message_title {
-  font-size: 3em;
-  color: red;
-}
-
 .message {
-  color: red;
+  color: var(--button-color);
   font-size: 2em;
-  /* padding-bottom: 1em; */
+}
+
+path {
+  fill: var(--button-color);
+}
+
+.rings_container {
+  position: relative;
+  border: 1px solid red;
+}
+
+.rings {
+  stroke: var(--button-color);
+}
+
+.connect {
+  padding-bottom: 1rem;
 }
