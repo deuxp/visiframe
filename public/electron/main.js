@@ -108,9 +108,9 @@ function validateSenderFrame(frame) {
 function handleRequest(options, cb) {
   try {
     const request = net.request(options);
-    request.on("response", response => {
+    request.on("response", (response) => {
       const data = [];
-      response.on("data", chunk => {
+      response.on("data", (chunk) => {
         data.push(chunk);
       });
       response.on("end", () => {
@@ -168,7 +168,7 @@ ipcMain.handle("login", async (event, email) => {
 // REFRESH ACCESS //
 ////////////// ////
 
-ipcMain.handle("refreshAccess", async event => {
+ipcMain.handle("refreshAccess", async (event) => {
   const senderFrame = event.senderFrame.url;
   if (!validateSenderFrame(senderFrame)) return;
 
@@ -178,7 +178,7 @@ ipcMain.handle("refreshAccess", async event => {
     credentials: "include",
     session: sesh,
   };
-  handleRequest(refreshOptions, response => {
+  handleRequest(refreshOptions, (response) => {
     console.log(response);
     mainWindow.webContents.send("renderRefreshAccess", response);
   });
@@ -188,7 +188,7 @@ ipcMain.handle("refreshAccess", async event => {
 // VERIFY ACCESS //
 ////////////// ////
 
-ipcMain.handle("verifyAccess", async event => {
+ipcMain.handle("verifyAccess", async (event) => {
   const senderFrame = event.senderFrame.url;
   if (!validateSenderFrame(senderFrame)) return;
   const getOptions = {
@@ -197,7 +197,7 @@ ipcMain.handle("verifyAccess", async event => {
     credentials: "include",
     session: sesh,
   };
-  handleRequest(getOptions, response => {
+  handleRequest(getOptions, (response) => {
     console.log(response);
     mainWindow.webContents.send("renderAccess", response);
   });
@@ -215,7 +215,7 @@ ipcMain.handle("getMenuItems", () => {
     session: sesh,
   };
   try {
-    handleRequest(getOptions, response => {
+    handleRequest(getOptions, (response) => {
       if (response.includes("<")) {
         console.log("404");
         return mainWindow.webContents.send("sendMenuItems", "null");
@@ -232,14 +232,14 @@ ipcMain.handle("getMenuItems", () => {
 // GET: Selection of Embedded Videos //
 //////////////////////////////////////
 
-ipcMain.handle("getEmbeds", (event, select) => {
+ipcMain.handle("getEmbeds", (_e, select) => {
   const getOptions = {
     url: `${deployBase}/api/projects/videos/${select}`,
     method: "GET",
     credentials: "include",
     session: sesh,
   };
-  handleRequest(getOptions, response => {
+  handleRequest(getOptions, (response) => {
     mainWindow.webContents.send("embeddedVideoList", response);
   });
   // }
@@ -249,8 +249,12 @@ ipcMain.handle("getEmbeds", (event, select) => {
 // RESIZE: Browser Window //
 ///////////////////////////
 
-ipcMain.handle("resizeWindow", (event, data) => {
+ipcMain.handle("resizeWindow", (_e, data) => {
   const { width, height } = JSON.parse(data);
   mainWindow.setSize(width, height);
   mainWindow.center();
+});
+
+ipcMain.handle("kiosk", (_e, flag) => {
+  mainWindow.kiosk(flag);
 });
