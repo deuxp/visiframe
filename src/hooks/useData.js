@@ -10,23 +10,25 @@ function useData() {
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
 
-  const handleSetTerms = arg => {
+  const [connecting, setConnecting] = useState(true);
+
+  const handleSetTerms = (arg) => {
     window.localStorage.setItem(termCheck, "true");
     setTerms(arg);
   };
 
-  const handleSelection = async uri => {
+  const handleSelection = async (uri) => {
     await accessPass();
-    window.bridge.getEmbeds("embeddedVideoList", uri, selection => {
+    window.bridge.getEmbeds("embeddedVideoList", uri, (selection) => {
       if (selection?.length > 0) {
         const newList = [...selection];
-        setEmbedList(prev => newList);
+        setEmbedList((prev) => newList);
         setCurrentIndex(0);
       }
     });
   };
 
-  const handleInitialGet = menuArr => {
+  const handleInitialGet = (menuArr) => {
     return new Promise((resolve, reject) => {
       try {
         setMenu(menuArr);
@@ -54,18 +56,18 @@ function useData() {
   }
 
   const loadMenu = async () => {
-    window.bridge.getMenuItems("sendMenuItems", response => {
+    window.bridge.getMenuItems("sendMenuItems", (response) => {
       handleInitialGet(response)
-        .then(menu => {
+        .then((menu) => {
           setAvailableWindowSize(WIDTH, HEIGHT);
           return menu;
         })
-        .then(menu => {
+        .then((menu) => {
           if (menu === null) return setMenu(null);
           // auto select on success
           handleSelection(menu[1].uri); // -------- index corresponds to category of vids
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     });
@@ -75,7 +77,7 @@ function useData() {
 
   // GETS initial data dump from ipcMain
   useEffect(() => {
-    window.bridge.refreshAccess().then(res => {
+    window.bridge.refreshAccess().then((res) => {
       if (!res) {
         return setMenu(null);
       }
@@ -99,6 +101,8 @@ function useData() {
     terms,
     isLoggedIn,
     setIsLoggedIn,
+    connecting,
+    setConnecting,
   };
 }
 
