@@ -1,18 +1,8 @@
 import React from "react";
 import style from "./Error.module.css";
 
-function Error({ reloadMenu, setIsLoggedIn }) {
+function Error() {
   const { message, container, rings_container, page, rings, connect } = style;
-
-  // const handleClick = () => {
-  //   window.bridge.refreshAccess().then((res) => {
-  //     if (res.refresh) {
-  //       reloadMenu();
-  //     } else {
-  //       setIsLoggedIn(false);
-  //     }
-  //   });
-  // };
 
   return (
     <div className={page}>
@@ -30,7 +20,7 @@ function Error({ reloadMenu, setIsLoggedIn }) {
           >
             <g
               fill="none"
-              fill-rule="evenodd"
+              fillRule="evenodd"
               transform="translate(1 1)"
               strokeWidth="2"
             >
