@@ -5,6 +5,7 @@ const axios = require("axios");
 const { deployBase, refresh, access, login } = require("./api-urls");
 
 const { setCookie } = require("./cookies");
+const { log } = require("console");
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -108,9 +109,9 @@ function validateSenderFrame(frame) {
 function handleRequest(options, cb) {
   try {
     const request = net.request(options);
-    request.on("response", (response) => {
+    request.on("response", response => {
       const data = [];
-      response.on("data", (chunk) => {
+      response.on("data", chunk => {
         data.push(chunk);
       });
       response.on("end", () => {
@@ -118,9 +119,12 @@ function handleRequest(options, cb) {
         cb(json);
       });
     });
-    request.on("error", () => {
-      console.log("Something went wrong with the internet");
-      cb(null);
+    request.on("error", err => {
+      // this likely happens when there is no connection to the internet
+      console.log("wifi is not connected");
+      console.log("handleRequest ERROR::::::::::::::");
+      console.log(err);
+      cb("Server error");
     });
     request.end();
   } catch (error) {
@@ -168,7 +172,7 @@ ipcMain.handle("login", async (event, email) => {
 // REFRESH ACCESS //
 ////////////// ////
 
-ipcMain.handle("refreshAccess", async (event) => {
+ipcMain.handle("refreshAccess", async event => {
   const senderFrame = event.senderFrame.url;
   if (!validateSenderFrame(senderFrame)) return;
 
@@ -178,7 +182,7 @@ ipcMain.handle("refreshAccess", async (event) => {
     credentials: "include",
     session: sesh,
   };
-  handleRequest(refreshOptions, (response) => {
+  handleRequest(refreshOptions, response => {
     console.log(response);
     mainWindow.webContents.send("renderRefreshAccess", response);
   });
@@ -188,7 +192,7 @@ ipcMain.handle("refreshAccess", async (event) => {
 // VERIFY ACCESS //
 ////////////// ////
 
-ipcMain.handle("verifyAccess", async (event) => {
+ipcMain.handle("verifyAccess", async event => {
   const senderFrame = event.senderFrame.url;
   if (!validateSenderFrame(senderFrame)) return;
   const getOptions = {
@@ -197,7 +201,7 @@ ipcMain.handle("verifyAccess", async (event) => {
     credentials: "include",
     session: sesh,
   };
-  handleRequest(getOptions, (response) => {
+  handleRequest(getOptions, response => {
     console.log(response);
     mainWindow.webContents.send("renderAccess", response);
   });
@@ -207,7 +211,6 @@ ipcMain.handle("verifyAccess", async (event) => {
 // GET: inital menu items //
 ///////////////////////////
 ipcMain.handle("getMenuItems", () => {
-  // const url = "http://localhost:8080/api/projects";
   const getOptions = {
     url: `${deployBase}/api/projects`,
     method: "GET",
@@ -215,11 +218,13 @@ ipcMain.handle("getMenuItems", () => {
     session: sesh,
   };
   try {
-    handleRequest(getOptions, (response) => {
-      if (response.includes("<")) {
-        console.log("404");
-        return mainWindow.webContents.send("sendMenuItems", "null");
-      }
+    handleRequest(getOptions, response => {
+      // TODO: what is the correct response status property
+      log({ response_status: response });
+
+      // if (response === 501) {
+      // }
+
       mainWindow.webContents.send("sendMenuItems", response);
     });
   } catch (error) {
@@ -239,7 +244,7 @@ ipcMain.handle("getEmbeds", (_e, select) => {
     credentials: "include",
     session: sesh,
   };
-  handleRequest(getOptions, (response) => {
+  handleRequest(getOptions, response => {
     mainWindow.webContents.send("embeddedVideoList", response);
   });
   // }
