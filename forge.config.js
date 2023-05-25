@@ -38,6 +38,7 @@ module.exports = {
       config: {
         icon: "src/icons/png/32x32.png",
         executableName: "utopics-visualizer",
+        maintainer: "https://github.com/deuxp",
         name: "utopics-visualizer",
         description: "Utopics visualizer. Stream visual efx from Utopics.",
         licence: "MIT",
