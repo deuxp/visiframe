@@ -41,19 +41,16 @@ function App() {
   });
 
   useEffect(() => {
-    /**
-   Actions for change in internet connectivity
-    * */
+    /** Actions for change in internet connectivity * */
     const listener = () => {
+      // TODO: load menu on reconnect? well everything rerenders when the wifi screen is gone already
       setConnected(navigator.onLine);
       if (navigator.onLine) {
         // loadMenu();
       }
-
       if (!navigator.onLine) {
         setConnected(false);
       }
-
       // window.bridge.kioskMode(navigator.onLine); //  ---- - - -////////  PRODUCTION//       /// ///
     };
 
