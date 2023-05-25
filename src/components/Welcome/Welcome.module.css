@@ -1,16 +1,19 @@
 .container {
   position: absolute;
+  height: 100%;
   width: 100%;
-  height: 100vh;
-  top: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.loading {
-  color: wheat;
+.text {
   position: relative;
-  z-index: 1;
+  font-size: 5rem;
+  color: #fff;
+}
+
+.aria {
+  color: #fff;
 }

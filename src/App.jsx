@@ -4,7 +4,9 @@ import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
 import Login from "./components/Login/Login";
-import { useEffect, useState } from "react";
+import Welcome from "./components/Welcome/Welcome";
+
+import { useEffect } from "react";
 
 function App() {
   const {
@@ -18,6 +20,9 @@ function App() {
     terms,
     isLoggedIn,
     setIsLoggedIn,
+    connected,
+    setConnected,
+    welcomeScreen,
   } = useData();
 
   const renderPlayers = embedList.map((_embed, index) => {
@@ -35,32 +40,49 @@ function App() {
     );
   });
 
-  window.addEventListener("online", () => {
-    setNet(navigator.onLine);
-    // window.bridge.kioskMode(navigator.onLine);
-  });
+  useEffect(() => {
+    /**
+   Actions for change in internet connectivity
+    * */
+    const listener = () => {
+      setConnected(navigator.onLine);
+      if (navigator.onLine) {
+        // loadMenu();
+      }
 
-  window.addEventListener("offline", () => {
-    setNet(navigator.onLine);
-    // window.bridge.kioskMode(navigator.onLine);
-  });
+      if (!navigator.onLine) {
+        setConnected(false);
+      }
 
-  const [net, setNet] = useState(navigator.onLine);
+      // window.bridge.kioskMode(navigator.onLine); //  ---- - - -////////  PRODUCTION//       /// ///
+    };
+
+    window.addEventListener("online", listener);
+    window.addEventListener("offline", listener);
+    return () => {
+      window.removeEventListener("online", listener);
+      window.removeEventListener("offline", listener);
+    };
+  }, []);
 
   return (
     <div className="App">
-      {/* {!isLoggedIn && menu !== null && ( */}
-      {/*   <Login setIsLoggedIn={setIsLoggedIn} loadmenu={loadMenu} /> */}
-      {/* )} */}
-      {/* {!terms && <TermsOfService handleSetTerms={handleSetTerms} />} */}
-      {/* {embedList.length > 0 && terms && isLoggedIn && renderPlayers} */}
-      {/* {menu === null && ( */}
-      {/*   <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} /> */}
-      {/* )} */}
+      {!welcomeScreen && connected && !isLoggedIn && menu !== null && (
+        <Login setIsLoggedIn={setIsLoggedIn} loadmenu={loadMenu} />
+      )}
+      {!welcomeScreen && connected && !terms && (
+        <TermsOfService handleSetTerms={handleSetTerms} />
+      )}
+      {!welcomeScreen &&
+        connected &&
+        embedList.length > 0 &&
+        terms &&
+        isLoggedIn &&
+        renderPlayers}
 
-      {net && <h1 style={{ color: "white" }}>Videos!</h1>}
+      {welcomeScreen && <Welcome />}
 
-      {!net && <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} />}
+      {!welcomeScreen && !connected && <Error />}
     </div>
   );
 }

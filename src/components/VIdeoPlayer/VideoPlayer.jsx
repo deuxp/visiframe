@@ -17,7 +17,7 @@ const VideoPlayer = memo(
     //   player.play();
     // });
     ///////////////////////////////////////////////////
-    const getRandomInt = max => {
+    const getRandomInt = (max) => {
       return Math.floor(Math.random() * max);
     };
 
@@ -37,12 +37,12 @@ const VideoPlayer = memo(
 
       player.current = new Player("vidFrame", options);
 
-      player.current.on("play", playData => {
+      player.current.on("play", (playData) => {
         console.log("playing");
         setIsLoading(false);
       });
 
-      player.current.on("error", error => {
+      player.current.on("error", (error) => {
         console.log("player error: ", error.message);
       });
 
@@ -51,7 +51,7 @@ const VideoPlayer = memo(
         setIsLoading(true);
       });
 
-      player.current.on("timeupdate", data => {
+      player.current.on("timeupdate", (data) => {
         if (data.percent >= 0.95) {
           let newIndex = getRandomInt(embedList.length);
           if (newIndex === currentIndex) {
@@ -62,7 +62,7 @@ const VideoPlayer = memo(
         }
       });
 
-      player.current.on("ended", data => {
+      player.current.on("ended", (data) => {
         console.log("ended: ", data);
         let newIndex = getRandomInt(embedList.length);
         if (newIndex === currentIndex) {
@@ -92,7 +92,7 @@ const VideoPlayer = memo(
       setCurrentIndex(newIndex);
     };
 
-    const destroyList = uri => {
+    const destroyList = (uri) => {
       handleSelection(uri);
       player.current.destroy();
     };
