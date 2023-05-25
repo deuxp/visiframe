@@ -7,23 +7,36 @@ function useData() {
   const [embedList, setEmbedList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [terms, setTerms] = useState(window.localStorage.getItem(termCheck));
+
   const WIDTH = window.screen.availWidth;
   const HEIGHT = window.screen.availHeight;
 
-  const [connecting, setConnecting] = useState(true);
+  const [connected, setConnected] = useState(navigator.onLine);
+  // track the timeoout of the welcome screen
+  const [welcomeScreen, setWelcomeScreen] = useState(true);
 
   const handleSetTerms = (arg) => {
     window.localStorage.setItem(termCheck, "true");
     setTerms(arg);
   };
 
+  /**
+   * @param max {Number}  embedList.length
+   * */
+  function randomVid(max = 1) {
+    return Math.floor(Math.random() * max);
+  }
+
   const handleSelection = async (uri) => {
     await accessPass();
     window.bridge.getEmbeds("embeddedVideoList", uri, (selection) => {
       if (selection?.length > 0) {
         const newList = [...selection];
+        // TODO: you can randomise the index here !!!
         setEmbedList((prev) => newList);
-        setCurrentIndex(0);
+        let startIdx = randomVid(newList.length);
+        setCurrentIndex(startIdx);
+        // setCurrentIndex(0);
       }
     });
   };
@@ -64,8 +77,10 @@ function useData() {
         })
         .then((menu) => {
           if (menu === null) return setMenu(null);
+          let startIdx = randomVid(menu.length);
           // auto select on success
-          handleSelection(menu[1].uri); // -------- index corresponds to category of vids
+          // handleSelection(menu[1].uri); // -------- index corresponds to category of vids
+          handleSelection(menu[startIdx].uri); // -------- index corresponds to category of vids
         })
         .catch((err) => {
           console.log(err);
@@ -77,18 +92,26 @@ function useData() {
 
   // GETS initial data dump from ipcMain
   useEffect(() => {
-    window.bridge.refreshAccess().then((res) => {
-      if (!res) {
-        return setMenu(null);
+    // setWelcomeScreen to false after the timeoou
+    // then run the following refresh/loadmenu cycle
+    const timeoutID = setTimeout(() => {
+      setWelcomeScreen(false);
+      if (connected) {
+        window.bridge.refreshAccess().then((res) => {
+          if (!res) {
+            return setMenu(null);
+          }
+          if (res.refresh) {
+            loadMenu();
+            setIsLoggedIn(true);
+          } else {
+            setIsLoggedIn(false);
+          }
+        });
       }
-      if (res.refresh) {
-        loadMenu();
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
+      return () => clearTimeout(timeoutID);
+    }, 5000);
+  }, [connected]);
 
   return {
     menu,
@@ -101,8 +124,9 @@ function useData() {
     terms,
     isLoggedIn,
     setIsLoggedIn,
-    connecting,
-    setConnecting,
+    connected,
+    setConnected,
+    welcomeScreen,
   };
 }
 
