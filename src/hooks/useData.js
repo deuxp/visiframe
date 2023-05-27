@@ -92,7 +92,7 @@ function useData() {
 
   // GETS initial data dump from ipcMain
   useEffect(() => {
-    // setWelcomeScreen to false after the timeoou
+    // setWelcomeScreen to false after the timeout
     // then run the following refresh/loadmenu cycle
     const timeoutID = setTimeout(() => {
       setWelcomeScreen(false);
@@ -104,6 +104,7 @@ function useData() {
           if (res.refresh) {
             loadMenu();
             setIsLoggedIn(true);
+            window.bridge.kioskMode(true);
           } else {
             setIsLoggedIn(false);
           }

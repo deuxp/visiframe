@@ -44,14 +44,13 @@ function App() {
     /** Actions for change in internet connectivity * */
     const listener = () => {
       // TODO: load menu on reconnect? well everything rerenders when the wifi screen is gone already
+      // answer: the useEffect initial GET is listening to `connected`;
+      // when it is triggered, if the value is true, then it runcs the loadmenu() again
       setConnected(navigator.onLine);
-      if (navigator.onLine) {
-        // loadMenu();
-      }
       if (!navigator.onLine) {
         setConnected(false);
       }
-      // window.bridge.kioskMode(navigator.onLine); //  ---- - - -////////  PRODUCTION//       /// ///
+      window.bridge.kioskMode(navigator.onLine); //  ---- - - -////////  PRODUCTION//       /// ///
     };
 
     window.addEventListener("online", listener);
