@@ -34,11 +34,18 @@
     "make": "react-scripts build && electron-forge make"
   },
   "eslintConfig": {
-    "extends": ["react-app", "react-app/jest"]
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
-    "production": ["last 1 electron version"],
-    "development": ["last 1 electron version"]
+    "production": [
+      "last 1 electron version"
+    ],
+    "development": [
+      "last 1 electron version"
+    ]
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",
