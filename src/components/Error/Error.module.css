@@ -37,11 +37,6 @@
   padding: 1em;
 }
 
-.message_title {
-  font-size: 3em;
-  color: red;
-}
-
 .message {
   color: red;
   font-size: 2em;

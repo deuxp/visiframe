@@ -1,17 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./Error.module.css";
 
-function Error({ reloadMenu, setIsLoggedIn }) {
-  const { message, container, back, message_title, page } = style;
+function Error({ setIsWifi, reloadMenu, setIsLoggedIn }) {
+  const { message, container, back, page } = style;
+
   const handleClick = () => {
     window.bridge.refreshAccess().then(res => {
       if (res.refresh) {
         reloadMenu();
+        setIsWifi(false);
       } else {
         setIsLoggedIn(false);
       }
     });
   };
+
+  useEffect(() => {
+    window.addEventListener("online", () => {
+      // something here
+      handleClick();
+    });
+  }, []);
+
   return (
     <div className={page}>
       <div className={container}>
@@ -26,8 +36,6 @@ function Error({ reloadMenu, setIsLoggedIn }) {
             <path d="M2 2L13 14M13 2L2 14" stroke="#FF0000" strokeWidth="4" />
           </svg>
         </div>
-        <div className={message_title}>Woopsies,</div>
-        <div className={message}>Something went wrong ..</div>
         <div className={message}>Please check your internet connection</div>
       </div>
     </div>

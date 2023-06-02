@@ -4,7 +4,7 @@ import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
 import Login from "./components/Login/Login";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const {
@@ -19,6 +19,8 @@ function App() {
     isLoggedIn,
     setIsLoggedIn,
   } = useData();
+
+  const [isWifi, setIsWifi] = useState(navigator.onLine);
 
   function setAvailableWindowSize() {
     const width = window.screen.availWidth;
@@ -54,9 +56,14 @@ function App() {
       )}
       {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
       {embedList.length > 0 && terms && isLoggedIn && renderPlayers}
-      {menu === null && (
-        <Error setIsLoggedIn={setIsLoggedIn} reloadMenu={loadMenu} />
-      )}
+      {menu === null ||
+        !isWifi(
+          <Error
+            setIsWifi={setIsWifi}
+            setIsLoggedIn={setIsLoggedIn}
+            reloadMenu={loadMenu}
+          />
+        )}
     </div>
   );
 }
