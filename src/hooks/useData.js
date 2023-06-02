@@ -21,7 +21,11 @@ function useData() {
       if (selection?.length > 0) {
         const newList = [...selection];
         setEmbedList(prev => newList);
-        setCurrentIndex(0);
+
+        let startIdx = randomVid(newList.length);
+
+        setCurrentIndex(startIdx);
+        // setCurrentIndex(0);
       }
     });
   };
@@ -37,12 +41,16 @@ function useData() {
     });
   };
 
+  function randomVid(max = 1) {
+    return Math.floor(Math.random() * max);
+  }
+
   // sets the available window size
-  const setAvailableWindowSize = (width, height) => {
-    const dimensions = { width, height };
-    const size = JSON.stringify(dimensions);
-    window.bridge.setWindowsize(size);
-  };
+  // const setAvailableWindowSize = (width, height) => {
+  //   const dimensions = { width, height };
+  //   const size = JSON.stringify(dimensions);
+  //   window.bridge.setWindowsize(size);
+  // };
 
   async function accessPass() {
     const access = await window.bridge.verifyAccess();
@@ -57,13 +65,16 @@ function useData() {
     window.bridge.getMenuItems("sendMenuItems", response => {
       handleInitialGet(response)
         .then(menu => {
-          setAvailableWindowSize(WIDTH, HEIGHT);
+          // setAvailableWindowSize(WIDTH, HEIGHT);
+          window.bridge.setKiosk();
           return menu;
         })
         .then(menu => {
           if (menu === null) return setMenu(null);
           // auto select on success
-          handleSelection(menu[1].uri); // -------- index corresponds to category of vids
+          let startIdx = randomVid(menu.length);
+          handleSelection(menu[startIdx].uri); // -------- index corresponds to category of vids
+          // handleSelection(menu[1].uri); // -------- index corresponds to category of vids
         })
         .catch(err => {
           console.log(err);

@@ -18,7 +18,7 @@ const createWindow = () => {
     icon: "src/icons/win/icon.ico", // windows
     // icon: "src/icons/png/512x512.png", // linux
     // icon: "src/icons/mac/icon.icns", // darwin
-    frame: true,
+    frame: false,
     backgroundColor: "#000",
     webPreferences: {
       contextIsolation: true,
@@ -253,4 +253,8 @@ ipcMain.handle("resizeWindow", (event, data) => {
   const { width, height } = JSON.parse(data);
   mainWindow.setSize(width, height);
   mainWindow.center();
+});
+
+ipcMain.handle("kiosk", () => {
+  mainWindow.setKiosk(true);
 });

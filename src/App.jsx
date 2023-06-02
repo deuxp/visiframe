@@ -4,6 +4,7 @@ import Error from "./components/Error/Error";
 import useData from "./hooks/useData";
 import TermsOfService from "./components/TermsOfService/TermsOfService";
 import Login from "./components/Login/Login";
+import { useEffect } from "react";
 
 function App() {
   const {
@@ -19,6 +20,14 @@ function App() {
     setIsLoggedIn,
   } = useData();
 
+  function setAvailableWindowSize() {
+    const width = window.screen.availWidth;
+    const height = window.screen.availHeight;
+    const dimensions = { width, height };
+    const size = JSON.stringify(dimensions);
+    window.bridge.setWindowsize(size);
+  }
+
   const renderPlayers = embedList.map((embed, index) => {
     return (
       currentIndex === index && (
@@ -33,6 +42,10 @@ function App() {
       )
     );
   });
+
+  useEffect(() => {
+    setAvailableWindowSize();
+  }, []);
 
   return (
     <div className="App">

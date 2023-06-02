@@ -64,6 +64,9 @@ const indexBridge = {
       });
     });
   },
+  setKiosk: () => {
+    ipcRenderer.invoke("kiosk");
+  },
 };
 
 process.once("loaded", () => {
