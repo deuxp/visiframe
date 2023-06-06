@@ -46,11 +46,11 @@ function useData() {
   }
 
   // sets the available window size
-  // const setAvailableWindowSize = (width, height) => {
-  //   const dimensions = { width, height };
-  //   const size = JSON.stringify(dimensions);
-  //   window.bridge.setWindowsize(size);
-  // };
+  const setAvailableWindowSize = (width, height) => {
+    const dimensions = { width, height };
+    const size = JSON.stringify(dimensions);
+    window.bridge.setWindowsize(size);
+  };
 
   async function accessPass() {
     const access = await window.bridge.verifyAccess();
@@ -65,8 +65,6 @@ function useData() {
     window.bridge.getMenuItems("sendMenuItems", response => {
       handleInitialGet(response)
         .then(menu => {
-          // setAvailableWindowSize(WIDTH, HEIGHT);
-          window.bridge.setKiosk();
           return menu;
         })
         .then(menu => {
@@ -86,6 +84,7 @@ function useData() {
 
   // GETS initial data dump from ipcMain
   useEffect(() => {
+    setAvailableWindowSize(WIDTH, HEIGHT);
     window.bridge.refreshAccess().then(res => {
       if (!res) {
         return setMenu(null);

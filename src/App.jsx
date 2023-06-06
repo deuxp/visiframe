@@ -22,13 +22,13 @@ function App() {
 
   const [isWifi, setIsWifi] = useState(navigator.onLine);
 
-  function setAvailableWindowSize() {
-    const width = window.screen.availWidth;
-    const height = window.screen.availHeight;
-    const dimensions = { width, height };
-    const size = JSON.stringify(dimensions);
-    window.bridge.setWindowsize(size);
-  }
+  // function setAvailableWindowSize() {
+  //   const width = window.screen.availWidth;
+  //   const height = window.screen.availHeight;
+  //   const dimensions = { width, height };
+  //   const size = JSON.stringify(dimensions);
+  //   window.bridge.setWindowsize(size);
+  // }
 
   const renderPlayers = embedList.map((embed, index) => {
     return (
@@ -45,9 +45,9 @@ function App() {
     );
   });
 
-  useEffect(() => {
-    setAvailableWindowSize();
-  }, []);
+  // useEffect(() => {
+  //   setAvailableWindowSize();
+  // }, []);
 
   return (
     <div className="App">
@@ -57,13 +57,13 @@ function App() {
       {!terms && <TermsOfService handleSetTerms={handleSetTerms} />}
       {embedList.length > 0 && terms && isLoggedIn && renderPlayers}
       {menu === null ||
-        !isWifi(
+        (!isWifi && (
           <Error
             setIsWifi={setIsWifi}
             setIsLoggedIn={setIsLoggedIn}
             reloadMenu={loadMenu}
           />
-        )}
+        ))}
     </div>
   );
 }
