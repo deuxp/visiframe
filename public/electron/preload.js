@@ -64,9 +64,9 @@ const indexBridge = {
       });
     });
   },
-  setKiosk: () => {
-    ipcRenderer.invoke("kiosk");
-  },
+  //   setKiosk: () => {
+  //     ipcRenderer.invoke("kiosk");
+  //   },
 };
 
 process.once("loaded", () => {

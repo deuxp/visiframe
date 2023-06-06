@@ -255,6 +255,6 @@ ipcMain.handle("resizeWindow", (event, data) => {
   mainWindow.center();
 });
 
-ipcMain.handle("kiosk", () => {
-  mainWindow.setKiosk(true);
-});
+// ipcMain.handle("kiosk", () => {
+//   mainWindow.setKiosk(true);
+// });
