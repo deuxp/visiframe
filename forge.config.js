@@ -24,6 +24,7 @@ module.exports = {
         authors: "Gottfried Kleinberger",
         setupExe: "utopics-visualizer.exe",
         setupIcon: "src/icons/win/icon.ico",
+        icon: "src/icons/win/icon.ico",
         name: "utopics-visualizer",
         description: "Utopics visualizer. Stream visual efx from Utopics.",
         noMsi: true,
