@@ -18,7 +18,7 @@ function ControlsGroup({
     controlsGroup.current.style.cursor = !isTrue ? "none" : "default";
   }, [isTrue]);
 
-  const handleMove = e => {
+  const handleMove = (e) => {
     if (!isTrue) {
       setIsTrue(!isTrue);
     }
