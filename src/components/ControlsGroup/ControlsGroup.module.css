@@ -18,3 +18,35 @@
   bottom: 50px;
   left: 40px;
 }
+
+.button {
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  height: 3rem;
+  width: 3rem;
+  background-color: var(--button-color);
+  border: none;
+  padding: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: white;
+}
+.button:hover svg path {
+  fill: var(--button-color);
+  background-color: white;
+}
+
+/* .button_container {
+  position: absolute;
+  display: flex;
+  border: 5px red solid;
+  height: 200px;
+  width: 200px;
+  padding: 2rem;
+  background-color: red;
+} */
