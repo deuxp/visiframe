@@ -10,6 +10,49 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+const flags = [
+  "purge-memory-button",
+  "smooth-scrolling",
+  "no-pings",
+  "disable-background-mode",
+  "dns-prefetch-disable",
+  "ignore-gpu-blacklist",
+  "enable-gpu-rasterization",
+  "enable-native-gpu-memory-buffers",
+  "enable-lazy-image-loading",
+  "enable-lazy-frame-loading",
+  "enable-checker-imaging",
+  "enable-quic",
+  "enable-resource-prefetch",
+  "enable-tcp-fast-open",
+  "disable-gpu-compositing",
+  "enable-fast-unload",
+  "enable-experimental-canvas-features",
+  "enable-scroll-prediction",
+  "enable-scroll-anchoring",
+  "enable-tab-audio-muting",
+  "disable-background-video-track",
+  "enable-simple-cache-backend",
+  "answers-in-suggest",
+
+  // "ppapi-flash-path=/usr/lib/chromium-browser/libpepflashplayer.so",
+  // "ppapi-flash-args=enable_stage_stagevideo_auto=0",
+  // "ppapi-flash-version=",
+
+  // "max-tiles-for-interest-area=512",
+  // "num-raster-threads=4",
+  // "default-tile-height=51",
+];
+
+app.commandLine.appendSwitch("num-raster-threads", "4");
+app.commandLine.appendSwitch("max-tiles-for-interest-area", "512");
+app.commandLine.appendSwitch("default-tile-height", "51");
+
+/** enables the following config flags normally set running chromium from the command line */
+flags.forEach((flag) => {
+  app.commandLine.appendSwitch(flag, "true");
+});
+
 let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
