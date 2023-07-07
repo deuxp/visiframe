@@ -64,6 +64,11 @@ const VideoPlayer = memo(
       });
 
       player.current.on("timeupdate", (data) => {
+        if (data.percent === 0.1) {
+          console.log("10 percent played");
+          setIsLoading(false);
+        }
+
         if (data.percent >= 0.95) {
           let newIndex = getRandomInt(embedList.length);
           if (newIndex === currentIndex) {
